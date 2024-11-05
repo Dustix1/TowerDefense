@@ -3,6 +3,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #include "utils/rectStuff.h"
+#include "utils/gameStatus.h"
 
 void sdl_draw_text(SDL_Renderer *renderer, TTF_Font *font, SDL_Color color, SDL_Rect location, const char *text)
 {
@@ -58,7 +59,7 @@ int main(int argc, char *argv[])
     SDL_Event event;
     int running = 1;
 
-    SDL_Texture *image = IMG_LoadTexture(menuRenderer, "../images/gru.png");
+
 
 
 
@@ -74,30 +75,18 @@ int main(int argc, char *argv[])
             }
         }
 
+        if (gameStatus.currentScene == MENU) {
 
-        int x, y;
-        SDL_GetMouseState(&x, &y);
+            SDL_RenderPresent(menuRenderer);
+        } else {
 
-        SDL_Rect bg = createRect(0, 0, x, y);
-        SDL_RenderCopy(menuRenderer, image, NULL, &bg);
-
-        SDL_Color startColor = createColor(x, y, x, 255);
-
-        SDL_Rect rect = createRect(windowSizeX / 2 - 75, 175, 300, 200);
-
-        const char *kokot = "Test haha";
-        sdl_draw_text(menuRenderer, font, startColor, rect, kokot);
-
-
-
-        // Zobraz vykreslené prvky na obrazovku
-        SDL_RenderPresent(menuRenderer);
+            SDL_RenderPresent(gameRenderer);
+        }
     }
 
 
 
     // Uvolnění prostředků
-    SDL_DestroyTexture(image);
     SDL_DestroyRenderer(menuRenderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

@@ -1,5 +1,11 @@
 #include "gameStatus.h"
 
-void changeScene(int scene) {
+struct GameStatusStruct gameStatus;
+
+void changeScene(currentSceneEnum scene) {
     gameStatus.currentScene = scene;
+}
+
+void initGame() {
+    changeScene(MENU);
 }
