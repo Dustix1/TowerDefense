@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
+#include "utils/rectStuff.h"
 
 void sdl_draw_text(SDL_Renderer *renderer, TTF_Font *font, SDL_Color color, SDL_Rect location, const char *text)
 {
@@ -29,19 +30,27 @@ int main(int argc, char *argv[])
     // Vytvoření okna
     SDL_Window *window = SDL_CreateWindow(
         "Tower Defense", // Titulek okna
-        100,               // Souřadnice x
-        100,               // Souřadnice y
+        500,               // Souřadnice x
+        500,               // Souřadnice y
         windowSizeX,       // Šířka
         windowSizeY,       // Výška
         SDL_WINDOW_SHOWN   // Okno se má po vytvoření rovnou zobrazit
     );
 
-    // Vytvoření kreslítka
-    SDL_Renderer *renderer = SDL_CreateRenderer(
+    // Menu scene renderer
+    SDL_Renderer *menuRenderer = SDL_CreateRenderer(
         window,
         -1,
         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawBlendMode(menuRenderer, SDL_BLENDMODE_BLEND);
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
+
+    // Game Scene renderer
+    SDL_Renderer *gameRenderer = SDL_CreateRenderer(
+        window,
+        -1,
+        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    SDL_SetRenderDrawBlendMode(gameRenderer, SDL_BLENDMODE_BLEND);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
     TTF_Font *font = TTF_OpenFont("../fonts/Arial.ttf", 20);
@@ -49,7 +58,9 @@ int main(int argc, char *argv[])
     SDL_Event event;
     int running = 1;
 
-    SDL_Texture *image = IMG_LoadTexture(renderer, "../images/gru.png");
+    SDL_Texture *image = IMG_LoadTexture(menuRenderer, "../images/gru.png");
+
+
 
     while (running == 1)
     {
@@ -63,35 +74,31 @@ int main(int argc, char *argv[])
             }
         }
 
-        SDL_Rect bg = {
-            .x = 0,
-            .y = 0,
-            .w = windowSizeX,
-            .h = windowSizeY};
-        SDL_RenderCopy(renderer, image, NULL, &bg);
 
         int x, y;
         SDL_GetMouseState(&x, &y);
-        SDL_Color startColor = {
-            .b = 0,
-            .g = 0,
-            .r = 255,
-            .a = 255};
-        SDL_Rect rect = {
-            .x = windowSizeX / 2 - 75,
-            .y = 175,
-            .w = 300,
-            .h = 200};
+
+        SDL_Rect bg = createRect(0, 0, x, y);
+        SDL_RenderCopy(menuRenderer, image, NULL, &bg);
+
+        SDL_Color startColor = createColor(x, y, x, 255);
+
+        SDL_Rect rect = createRect(windowSizeX / 2 - 75, 175, 300, 200);
+
         const char *kokot = "Test haha";
-        sdl_draw_text(renderer, font, startColor, rect, kokot);
+        sdl_draw_text(menuRenderer, font, startColor, rect, kokot);
+
+
 
         // Zobraz vykreslené prvky na obrazovku
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(menuRenderer);
     }
+
+
 
     // Uvolnění prostředků
     SDL_DestroyTexture(image);
-    SDL_DestroyRenderer(renderer);
+    SDL_DestroyRenderer(menuRenderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
     TTF_CloseFont(font);
