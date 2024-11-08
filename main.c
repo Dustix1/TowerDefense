@@ -2,23 +2,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
+#include <stdbool.h>
+
 #include "utils/rectStuff.h"
 #include "utils/gameStatus.h"
-
-void sdl_draw_text(SDL_Renderer *renderer, TTF_Font *font, SDL_Color color, SDL_Rect location, const char *text)
-{
-    // Vykreslení textu se zadaným fontem a barvou do obrázku (surface)
-    SDL_Surface *surface = TTF_RenderText_Blended(font, text, color);
-    // Převod surface na hardwarovou texturu
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-
-    // Vykreslení obrázku
-    SDL_RenderCopy(renderer, texture, NULL, &location);
-
-    // Uvolnění textury a surface
-    SDL_DestroyTexture(texture);
-    SDL_FreeSurface(surface);
-}
+#include "utils/text.h"
+#include "interactions/mouse.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,11 +20,11 @@ int main(int argc, char *argv[])
     // Vytvoření okna
     SDL_Window *window = SDL_CreateWindow(
         "Tower Defense", // Titulek okna
-        500,               // Souřadnice x
-        500,               // Souřadnice y
-        windowSizeX,       // Šířka
-        windowSizeY,       // Výška
-        SDL_WINDOW_SHOWN   // Okno se má po vytvoření rovnou zobrazit
+        500,             // Souřadnice x
+        500,             // Souřadnice y
+        windowSizeX,     // Šířka
+        windowSizeY,     // Výška
+        SDL_WINDOW_SHOWN // Okno se má po vytvoření rovnou zobrazit
     );
 
     // Menu scene renderer
@@ -59,9 +48,7 @@ int main(int argc, char *argv[])
     SDL_Event event;
     int running = 1;
 
-
-
-
+    initGame();
 
     while (running == 1)
     {
@@ -75,16 +62,25 @@ int main(int argc, char *argv[])
             }
         }
 
-        if (gameStatus.currentScene == MENU) {
-
+        if (gameStatus.currentScene == MENU)
+        {
+            SDL_Rect startBtnRect = createRect(windowSizeX / 2 - 125, 75, 300, 100);
+            char startBtnColor[7] = {0};
+            if (!isMouseOnRect(startBtnRect)) {
+                strcpy(startBtnColor, "0000FF");
+            }
+            else {
+                strcpy(startBtnColor, "00FF00");
+            }
+            sdl_draw_text(menuRenderer, font, createColor(startBtnColor, 255), startBtnRect, "START");
             SDL_RenderPresent(menuRenderer);
-        } else {
+        }
+        else
+        {
 
             SDL_RenderPresent(gameRenderer);
         }
     }
-
-
 
     // Uvolnění prostředků
     SDL_DestroyRenderer(menuRenderer);

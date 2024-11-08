@@ -6,6 +6,6 @@
 SDL_Rect createRect(int posX, int posY, int width, int height);
 
 // Creates a Color and returns it
-SDL_Color createColor(int r, int g, int b, int a);
+SDL_Color createColor(char* hexColor, int alpha);
 
 #endif

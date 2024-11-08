@@ -1,5 +1,5 @@
+cmake -B build CMakeLists.txt
 cd build
-cmake ../CMakeLists.txt
 make
 ./sdlgame
 cd ..

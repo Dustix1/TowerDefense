@@ -3,7 +3,7 @@ project(TowerDefense C)
 
 set(CMAKE_C_STANDARD 11)
 
-file(GLOB SOURCES "*.c" "utils/*.c")
+file(GLOB SOURCES "*.c" "utils/*.c" "interactions/*.c")
 add_executable(sdlgame ${SOURCES})
 
 find_package(SDL2 REQUIRED)
