@@ -68,6 +68,7 @@ int main(int argc, char *argv[])
             renderGame(renderer, windowSizeX, windowSizeY);
         }
         SDL_RenderPresent(renderer);
+        
     }
 
     // Uvolnění prostředků

@@ -43,7 +43,7 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
         if (isMouseOnRect(textButtons[i]->text->rect)) temp = textButtons[i];
     }
     
-    if (strcmp(temp->ID, "MenuQuitBtn") == 0) {
+    if (strcmp(temp->ID, "QuitBtn") == 0) {
         gameStatus.running = false;
     } else if (strcmp(temp->ID, "MenuStartBtn") == 0) {
         freeMenuScene();
@@ -59,4 +59,5 @@ void freeTextButtons() {
     }
     buttonCount = 0;
     free(textButtons);
+    textButtons = NULL;
 }

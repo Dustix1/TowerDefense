@@ -38,7 +38,7 @@ void renderMenu(SDL_Renderer* renderer, int windowSizeX, int windowSizeY)
     w = 300;
     quitBtnText->rect = createRect((windowSizeX - w) / 2, startBtnText->rect.y + startBtnText->rect.h + 25, w, 125);
     quitBtnText->font = font;
-    makeButton(quitBtnText, createColor("FF0000", 255), "MenuQuitBtn");
+    makeButton(quitBtnText, createColor("FF0000", 255), "QuitBtn");
 
 
     hilightButtons();
