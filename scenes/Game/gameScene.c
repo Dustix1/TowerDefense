@@ -10,7 +10,7 @@ SDL_Texture* background;
 static TTF_Font* font;
 
 void initGameScene(SDL_Renderer* renderer) {
-    background = IMG_LoadTexture(renderer, "../scenes/Game/images/cat-test.png");
+    background = IMG_LoadTexture(renderer, "../scenes/Game/images/cat-test.jpg");
     font = TTF_OpenFont("../fonts/Arial.ttf", 60);
 }
 
