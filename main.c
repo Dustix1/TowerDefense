@@ -8,6 +8,7 @@
 #include "utils/gameStatus.h"
 #include "utils/text.h"
 #include "interactions/mouse.h"
+#include "scenes/Menu/menuScene.h"
 
 int main(int argc, char *argv[])
 {
@@ -43,12 +44,11 @@ int main(int argc, char *argv[])
     SDL_SetRenderDrawBlendMode(gameRenderer, SDL_BLENDMODE_BLEND);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-    TTF_Font *font = TTF_OpenFont("../fonts/Arial.ttf", 20);
-
     SDL_Event event;
     int running = 1;
 
     initGame();
+    initMenuScene();
 
     while (running == 1)
     {
@@ -60,33 +60,28 @@ int main(int argc, char *argv[])
             {
                 running = 0;
             }
+
+            if (event.type == SDL_MOUSEBUTTONDOWN) {
+                
+            }
         }
 
         if (gameStatus.currentScene == MENU)
         {
-            SDL_Rect startBtnRect = createRect(windowSizeX / 2 - 125, 75, 300, 100);
-            char startBtnColor[7] = {0};
-            if (!isMouseOnRect(startBtnRect)) {
-                strcpy(startBtnColor, "0000FF");
-            }
-            else {
-                strcpy(startBtnColor, "00FF00");
-            }
-            sdl_draw_text(menuRenderer, font, createColor(startBtnColor, 255), startBtnRect, "START");
+            renderMenu(menuRenderer, windowSizeX, windowSizeY);
             SDL_RenderPresent(menuRenderer);
         }
         else
         {
-
             SDL_RenderPresent(gameRenderer);
         }
     }
 
     // Uvolnění prostředků
     SDL_DestroyRenderer(menuRenderer);
+    SDL_DestroyRenderer(gameRenderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    TTF_CloseFont(font);
     TTF_Quit();
 
     return 0;
