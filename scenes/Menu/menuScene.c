@@ -5,44 +5,48 @@
 
 #include "../../utils/rectStuff.h"
 #include "../../utils/text.h"
+#include "../../interactions/textButtons.h"
 #include "../../interactions/mouse.h"
 
-TTF_Font *font;
+static TTF_Font *font;
 
 void initMenuScene()
 {
     font = TTF_OpenFont("../fonts/Arial.ttf", 60);
 }
 
-void renderMenu(SDL_Renderer* menuRenderer, int windowSizeX, int windowSizeY)
+void renderMenu(SDL_Renderer* renderer, int windowSizeX, int windowSizeY)
 {
-    sdl_draw_text(menuRenderer, font, createColor("FFFFFF", 255), createRect(25, 25, windowSizeX - 50, 125), "Epic Tower Defense");
+    int w;
+    Text *title = malloc(sizeof(Text));
+    title->text = "Epic Tower Defense";
+    title->color = createColor("FFFFFF", 255);
+    title->rect = createRect(25, 25, windowSizeX - 50, 125);
+    title->font = font;
 
-    SDL_Rect startBtnRect = createRect(windowSizeX / 2 - 125, 225, 300, 125);
-    char startBtnColor[7] = {0};
-    if (!isMouseOnRect(startBtnRect))
-    {
-        strcpy(startBtnColor, "FFA500");
-    }
-    else
-    {
-        strcpy(startBtnColor, "00FF00");
-    }
+    Text *startBtnText = malloc(sizeof(Text));
+    startBtnText->text = "Start";
+    startBtnText->color = createColor("FFA500", 255);
+    w = 300;
+    startBtnText->rect = createRect((windowSizeX - w) / 2, 225, w, 125);
+    startBtnText->font = font;
+    makeButton(startBtnText, createColor("00FF00", 255), "MenuStartBtn");
 
-    SDL_Rect quitBtnRect = createRect(windowSizeX / 2 - 125, windowSizeY / 2 - 75, 300, 125);
-    char quitBtnColor[7] = {0};
-    if (!isMouseOnRect(quitBtnRect))
-    {
-        strcpy(quitBtnColor, "DD8300");
-    }
-    else
-    {
-        strcpy(quitBtnColor, "FF0000");
-    }
-    sdl_draw_text(menuRenderer, font, createColor(startBtnColor,    255), startBtnRect, "Start");
-    sdl_draw_text(menuRenderer, font, createColor(quitBtnColor, 255), quitBtnRect, "Quit");
+    Text *quitBtnText = malloc(sizeof(Text));
+    quitBtnText->text = "Quit";
+    quitBtnText->color = createColor("DD8300", 255);
+    w = 300;
+    quitBtnText->rect = createRect((windowSizeX - w) / 2, startBtnText->rect.y + startBtnText->rect.h + 25, w, 125);
+    quitBtnText->font = font;
+    makeButton(quitBtnText, createColor("FF0000", 255), "MenuQuitBtn");
+
+
+    hilightButtons();
+    sdl_draw_text(renderer, title);
+    sdl_draw_text(renderer, startBtnText);
+    sdl_draw_text(renderer, quitBtnText);
 }
 
-void freeMenuScene() { // DON'T FORGET TO USE THIS !!!
+void freeMenuScene() {
     TTF_CloseFont(font);
 }

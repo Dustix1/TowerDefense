@@ -7,8 +7,10 @@
 #include "utils/rectStuff.h"
 #include "utils/gameStatus.h"
 #include "utils/text.h"
+#include "interactions/textButtons.h"
 #include "interactions/mouse.h"
 #include "scenes/Menu/menuScene.h"
+#include "scenes/Game/gameScene.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,29 +30,20 @@ int main(int argc, char *argv[])
         SDL_WINDOW_SHOWN // Okno se má po vytvoření rovnou zobrazit
     );
 
-    // Menu scene renderer
-    SDL_Renderer *menuRenderer = SDL_CreateRenderer(
+    // scene renderer
+    SDL_Renderer *renderer = SDL_CreateRenderer(
         window,
         -1,
         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    SDL_SetRenderDrawBlendMode(menuRenderer, SDL_BLENDMODE_BLEND);
-    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
-
-    // Game Scene renderer
-    SDL_Renderer *gameRenderer = SDL_CreateRenderer(
-        window,
-        -1,
-        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    SDL_SetRenderDrawBlendMode(gameRenderer, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
     SDL_Event event;
-    int running = 1;
 
     initGame();
     initMenuScene();
 
-    while (running == 1)
+    while (gameStatus.running)
     {
         // Dokud jsou k dispozici nějaké události, ukládej je do proměnné `event`
         while (SDL_PollEvent(&event))
@@ -58,28 +51,29 @@ int main(int argc, char *argv[])
             // Pokud došlo k uzavření okna, nastav proměnnou `running` na `0`
             if (event.type == SDL_QUIT)
             {
-                running = 0;
+                gameStatus.running = false;
             }
 
             if (event.type == SDL_MOUSEBUTTONDOWN) {
-                
+                if (isMouseOnButton()) makeButtonsDoSomething(renderer);
             }
         }
 
-        if (gameStatus.currentScene == MENU)
-        {
-            renderMenu(menuRenderer, windowSizeX, windowSizeY);
-            SDL_RenderPresent(menuRenderer);
+        SDL_GetWindowSize(window, &windowSizeX, &windowSizeY);
+
+        SDL_RenderClear(renderer);
+        if (gameStatus.currentScene == MENU) {
+            renderMenu(renderer, windowSizeX, windowSizeY);
+        } else {
+            renderGame(renderer, windowSizeX, windowSizeY);
         }
-        else
-        {
-            SDL_RenderPresent(gameRenderer);
-        }
+        SDL_RenderPresent(renderer);
     }
 
     // Uvolnění prostředků
-    SDL_DestroyRenderer(menuRenderer);
-    SDL_DestroyRenderer(gameRenderer);
+    if (gameStatus.currentScene == MENU) freeMenuScene();
+    freeTextButtons();
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
     TTF_Quit();

@@ -1,6 +1,8 @@
 #ifndef GAMESTATUS_H
 #define GAMESTATUS_H
 
+#include <stdbool.h>
+
 typedef enum {
     MENU,
     GAME
@@ -8,6 +10,7 @@ typedef enum {
 
 struct GameStatusStruct{
     currentSceneEnum currentScene;
+    bool running;
 };
 
 extern struct GameStatusStruct gameStatus;

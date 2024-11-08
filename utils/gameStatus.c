@@ -8,4 +8,5 @@ void changeScene(currentSceneEnum scene) {
 
 void initGame() {
     changeScene(MENU);
+    gameStatus.running = true;
 }
