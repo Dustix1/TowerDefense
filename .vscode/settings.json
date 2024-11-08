@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "sdl_ttf.h": "c",
-        "rectstuff.h": "c",
-        "gamestatus.h": "c",
-        "sdl.h": "c"
-    }
-}
