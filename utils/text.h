@@ -1,5 +1,4 @@
-#ifndef TEXT_H
-#define TEXT_H
+#pragma once
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -13,5 +12,3 @@ typedef struct {
 
 
 void sdl_draw_text(SDL_Renderer *renderer, Text* text);
-
-#endif

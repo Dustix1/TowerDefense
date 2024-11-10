@@ -1,5 +1,4 @@
-#ifndef TEXTBUTTONS_H
-#define TEXTBUTTONS_H
+#pragma once
 
 #include <SDL2/SDL.h>
 #include <stdbool.h>
@@ -19,6 +18,3 @@ void freeTextButtons();
 
 bool isMouseOnButton();
 void makeButtonsDoSomething(SDL_Renderer* renderer);
-
-
-#endif

@@ -12,7 +12,7 @@
 #include "scenes/Menu/menuScene.h"
 #include "scenes/Game/gameScene.h"
 
-int main(int argc, char *argv[])
+int main()
 {
     // Inicializace SDL
     SDL_Init(SDL_INIT_VIDEO);

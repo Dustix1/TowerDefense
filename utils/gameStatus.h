@@ -1,7 +1,8 @@
-#ifndef GAMESTATUS_H
-#define GAMESTATUS_H
+#pragma once
 
 #include <stdbool.h>
+
+extern double deltaTime;
 
 typedef enum {
     MENU,
@@ -11,6 +12,7 @@ typedef enum {
 struct GameStatusStruct{
     currentSceneEnum currentScene;
     bool running;
+    double deltaTime;
 };
 
 extern struct GameStatusStruct gameStatus;
@@ -21,4 +23,4 @@ void changeScene(currentSceneEnum scene);
 // Initializes the game on start
 void initGame();
 
-#endif
+void updateDeltaTime();
