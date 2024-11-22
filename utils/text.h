@@ -11,4 +11,4 @@ typedef struct {
 } Text;
 
 
-void sdl_draw_text(SDL_Renderer *renderer, Text* text);
+void renderText(SDL_Renderer *renderer, Text* text);

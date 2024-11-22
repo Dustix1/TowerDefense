@@ -17,17 +17,18 @@ int main()
     // Inicializace SDL
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
-
-    int windowSizeX = 1500;
-    int windowSizeY = 1000;
+    SDL_Rect display;
+    SDL_GetDisplayBounds(0, &display);
+    gameStatus.windowSizeX = 1920;
+    gameStatus.windowSizeY = 1080;
     // Vytvoření okna
     SDL_Window *window = SDL_CreateWindow(
         "Tower Defense", // Titulek okna
-        500,             // Souřadnice x
-        500,             // Souřadnice y
-        windowSizeX,     // Šířka
-        windowSizeY,     // Výška
-        SDL_WINDOW_SHOWN // Okno se má po vytvoření rovnou zobrazit
+        SDL_WINDOWPOS_CENTERED,             // Souřadnice x
+        SDL_WINDOWPOS_CENTERED,             // Souřadnice y
+        gameStatus.windowSizeX,     // Šířka
+        gameStatus.windowSizeY,     // Výška
+        SDL_WINDOW_BORDERLESS // Okno se má po vytvoření rovnou zobrazit
     );
 
     // scene renderer
@@ -59,13 +60,13 @@ int main()
             }
         }
 
-        SDL_GetWindowSize(window, &windowSizeX, &windowSizeY);
+        SDL_GetWindowSize(window, &gameStatus.windowSizeX, &gameStatus.windowSizeY);
 
         SDL_RenderClear(renderer);
         if (gameStatus.currentScene == MENU) {
-            renderMenu(renderer, windowSizeX, windowSizeY);
+            renderMenu(renderer);
         } else {
-            renderGame(renderer, windowSizeX, windowSizeY);
+            renderGame(renderer);
         }
         SDL_RenderPresent(renderer);
         
@@ -78,6 +79,5 @@ int main()
     SDL_DestroyWindow(window);
     SDL_Quit();
     TTF_Quit();
-
     return 0;
 }

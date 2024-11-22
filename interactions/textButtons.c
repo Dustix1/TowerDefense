@@ -21,7 +21,7 @@ void makeButton(Text* text, SDL_Color hilightColor, char* id) {
     buttonCount++;
 }
 
-void hilightButtons() {
+void highlightButtons() {
     for (size_t i = 0; i < buttonCount; i++)
     {
         if (isMouseOnRect(textButtons[i]->text->rect)) textButtons[i]->text->color = textButtons[i]->hilightColor;
@@ -48,7 +48,7 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
     } else if (strcmp(temp->ID, "MenuStartBtn") == 0) {
         freeMenuScene();
         freeTextButtons();
-        initGameScene(renderer);
+        initGameScene(renderer, WILLOW); // MAKE SELECTION POSSIBLE LATER
         changeScene(GAME);
     }
 }

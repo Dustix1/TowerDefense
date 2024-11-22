@@ -7,18 +7,25 @@ extern double deltaTime;
 typedef enum {
     MENU,
     GAME
-} currentSceneEnum;
+} CurrentSceneEnum;
+
+typedef enum {
+    WILLOW,
+} SelectedMap;
 
 struct GameStatusStruct{
-    currentSceneEnum currentScene;
+    CurrentSceneEnum currentScene;
+    SelectedMap selectedMap;
     bool running;
     double deltaTime;
+    int windowSizeX;
+    int windowSizeY;
 };
 
 extern struct GameStatusStruct gameStatus;
 
 // Change the scene possible options: MENU, GAME
-void changeScene(currentSceneEnum scene);
+void changeScene(CurrentSceneEnum scene);
 
 // Initializes the game on start
 void initGame();

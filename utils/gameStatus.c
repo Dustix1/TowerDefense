@@ -9,7 +9,7 @@ static Uint64 last;
 static Uint64 now;
 double deltaTime;
 
-void changeScene(currentSceneEnum scene) {
+void changeScene(CurrentSceneEnum scene) {
     gameStatus.currentScene = scene;
 }
 

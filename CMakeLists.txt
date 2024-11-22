@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 3.12)
 project(TowerDefense C)
 
 set(CMAKE_C_STANDARD 11)
-add_compile_options(-fsanitize=address)
-add_link_options(-fsanitize=address)
+add_compile_options(-lm)
+add_link_options(-lm)
 
-file(GLOB SOURCES "*.c" "utils/*.c" "interactions/*.c" "scenes/Menu/*.c" "scenes/Game/*.c" "scenes/Game/Friendly/*.c" "scenes/Game/Enemy/*.c")
+file(GLOB SOURCES "*.c" "utils/*.c" "interactions/*.c" "scenes/Menu/*.c" "scenes/Game/*.c" "scenes/Game/Friendly/*.c" "scenes/Game/Enemy/*.c" "scenes/Game/Map/*.c")
 add_executable(sdlgame ${SOURCES})
 
 find_package(SDL2 REQUIRED)

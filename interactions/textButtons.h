@@ -12,7 +12,7 @@ typedef struct {
 } Button;
 
 
-void hilightButtons();
+void highlightButtons();
 void makeButton(Text* text, SDL_Color hilightColor, char* id);
 void freeTextButtons();
 

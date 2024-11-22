@@ -7,44 +7,57 @@
 #include "../../utils/text.h"
 #include "../../interactions/textButtons.h"
 #include "../../interactions/mouse.h"
+#include "../../utils/gameStatus.h"
 
 static TTF_Font *font;
+Text *title;
+Text *startBtnText;
+Text *quitBtnText;
+SDL_Color quitColor;
+SDL_Color startColor;
+SDL_Color titleColor;
 
 void initMenuScene()
 {
     font = TTF_OpenFont("../fonts/Arial.ttf", 60);
-}
 
-void renderMenu(SDL_Renderer* renderer, int windowSizeX, int windowSizeY)
-{
     int w;
-    Text *title = malloc(sizeof(Text));
+    title = malloc(sizeof(Text));
     title->text = "Epic Tower Defense";
-    title->color = createColor("FFFFFF", 255);
-    title->rect = createRect(25, 25, windowSizeX - 50, 125);
+    titleColor = createColor("FFFFFF", 255);
+    title->color = titleColor;
+    title->rect = createRect(25, 25, gameStatus.windowSizeX - 50, 125);
     title->font = font;
 
-    Text *startBtnText = malloc(sizeof(Text));
+    startBtnText = malloc(sizeof(Text));
     startBtnText->text = "Start";
-    startBtnText->color = createColor("FFA500", 255);
+    startColor = createColor("FFA500", 255);
+    startBtnText->color = startColor;
     w = 300;
-    startBtnText->rect = createRect((windowSizeX - w) / 2, 225, w, 125);
+    startBtnText->rect = createRect((gameStatus.windowSizeX - w) / 2, 225, w, 125);
     startBtnText->font = font;
     makeButton(startBtnText, createColor("00FF00", 255), "MenuStartBtn");
 
-    Text *quitBtnText = malloc(sizeof(Text));
+    quitBtnText = malloc(sizeof(Text));
     quitBtnText->text = "Quit";
-    quitBtnText->color = createColor("DD8300", 255);
+    quitColor = createColor("DD8300", 255);
+    quitBtnText->color = quitColor;
     w = 300;
-    quitBtnText->rect = createRect((windowSizeX - w) / 2, startBtnText->rect.y + startBtnText->rect.h + 25, w, 125);
+    quitBtnText->rect = createRect((gameStatus.windowSizeX - w) / 2, startBtnText->rect.y + startBtnText->rect.h + 25, w, 125);
     quitBtnText->font = font;
     makeButton(quitBtnText, createColor("FF0000", 255), "QuitBtn");
+}
 
-
-    hilightButtons();
-    sdl_draw_text(renderer, title);
-    sdl_draw_text(renderer, startBtnText);
-    sdl_draw_text(renderer, quitBtnText);
+void renderMenu(SDL_Renderer* renderer)
+{
+    title->color = titleColor;
+    startBtnText->color = startColor;
+    quitBtnText->color = quitColor;
+    highlightButtons();
+    
+    renderText(renderer, title);
+    renderText(renderer, startBtnText);
+    renderText(renderer, quitBtnText);
 }
 
 void freeMenuScene() {

@@ -2,6 +2,6 @@
 
 #include <SDL2/SDL.h>
 
-void renderMenu(SDL_Renderer* menuRenderer, int windowSizeX, int windowSizeY);
+void renderMenu(SDL_Renderer* menuRenderer);
 void initMenuScene();
 void freeMenuScene();

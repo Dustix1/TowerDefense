@@ -1,4 +1,4 @@
-cmake -B build CMakeLists.txt
+cmake -B build
 cd build
 make
 ./sdlgame
