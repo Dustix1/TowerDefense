@@ -12,6 +12,7 @@
 #include "../../utils/gameStatus.h"
 #include "../../utils/rectStuff.h"
 #include "Map/map.h"
+#include "Enemy/enemy.h"
 
 static TTF_Font* font;
 
@@ -25,9 +26,12 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     pointFinder.color = createColor("FF0000", 255);
     pointFinder.font = font;
     pointFinder.rect = createRect(20, gameStatus.windowSizeY - 100, 350, 100);
+
+    spawnNewEnemy(DEOGEN, renderer);
 }
 
 void renderGame(SDL_Renderer* renderer) {
+    updateDeltaTime();
     /*int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
     double angle = atan2(temp.h / 2 - mouseY, temp.w / 2 - mouseX) * (180 / M_PI) - 90;
@@ -46,6 +50,10 @@ void renderGame(SDL_Renderer* renderer) {
     pointFinder.text = txt;
     renderText(renderer, &pointFinder);
 
+
+    moveEnemiesTowardsCurrPoint();
+    renderEnemies(renderer);
+    
     highlightButtons();
 }
 
