@@ -10,6 +10,16 @@ SDL_Rect createRect(int posX, int posY, int width, int height) {
     return buff;
 }
 
+SDL_FRect createFRect(float posX, float posY, float width, float height) {
+    SDL_FRect buff = {
+        .x = posX,
+        .y = posY,
+        .w = width,
+        .h = height
+    };
+    return buff;
+}
+
 SDL_Color createColor(char* hexColor, int alpha) {
     char r[3] = {0};
     strncpy(r, hexColor, 2);

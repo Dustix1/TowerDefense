@@ -17,6 +17,8 @@
 static TTF_Font* font;
 
 Text pointFinder;
+Text spawnEnemy;
+SDL_Color spawnEnemyColor;
 
 void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     createMap(selectedMap, renderer);
@@ -26,8 +28,13 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     pointFinder.color = createColor("FF0000", 255);
     pointFinder.font = font;
     pointFinder.rect = createRect(20, gameStatus.windowSizeY - 100, 350, 100);
-
-    spawnNewEnemy(DEOGEN, renderer);
+    
+    spawnEnemyColor = createColor("0022FF", 255);
+    spawnEnemy.color = spawnEnemyColor;
+    spawnEnemy.font = font;
+    spawnEnemy.rect = createRect(20, 20, 300, 100);
+    spawnEnemy.text = "Spawn Random Enemy";
+    makeButton(&spawnEnemy, createColor("00FF22", 255), "spwnRndEne");
 }
 
 void renderGame(SDL_Renderer* renderer) {
@@ -39,7 +46,7 @@ void renderGame(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, map.mapTexture, NULL, &map.mapRect);
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-    SDL_RenderDrawLines(renderer, map.pointPath, 12);
+    SDL_RenderDrawLines(renderer, map.mapPointsWithDirections.points, 12);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
     int mouseX, mouseY;
@@ -50,10 +57,12 @@ void renderGame(SDL_Renderer* renderer) {
     pointFinder.text = txt;
     renderText(renderer, &pointFinder);
 
-
-    moveEnemiesTowardsCurrPoint();
+    moveEnemiesTowardsCurrPoint(renderer);
     renderEnemies(renderer);
     
+    renderText(renderer, &spawnEnemy);
+    spawnEnemy.color = spawnEnemyColor;
+
     highlightButtons();
 }
 

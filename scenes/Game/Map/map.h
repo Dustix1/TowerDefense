@@ -5,12 +5,17 @@
 
 #include "../../../utils/gameStatus.h"
 #include "../../../utils/rectStuff.h"
+#include "../Enemy/enemy.h"
 
+struct MapPointsWithDirections{
+    SDL_Point* points;
+    DIRECTION* directions;
+};
 
 struct Map{
     SDL_Texture* mapTexture;
     SDL_Rect mapRect;
-    SDL_Point* pointPath;
+    struct MapPointsWithDirections mapPointsWithDirections;
 };
 
 extern struct Map map;

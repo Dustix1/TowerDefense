@@ -1,6 +1,7 @@
 #include "map.h"
 
 struct Map map;
+static struct MapPointsWithDirections buff;
 
 void createMap(SelectedMap selectedMap, SDL_Renderer* renderer) {
     map.mapRect = createRect(0, 0, gameStatus.windowSizeX, gameStatus.windowSizeY - 250);
@@ -9,9 +10,16 @@ void createMap(SelectedMap selectedMap, SDL_Renderer* renderer) {
     case WILLOW:
         SDL_Point points[12] = {{605, 850}, {605, 500}, {218, 500}, {218, 309}, {1106, 309}, {1106, 70}, {1759, 70}, {1759, 210}, {1310, 210},
                                 {1310, 335}, {1500, 335}, {1500, 750}};
+        DIRECTION directions[12] = {-1, UP, LEFT, UP, RIGHT, UP, RIGHT, DOWN, LEFT, DOWN, RIGHT, DOWN};
+
+        buff.points = malloc(12 * sizeof(SDL_Point));
+        memcpy(buff.points, points, 12 * sizeof(SDL_Point));
+        buff.directions = malloc(12 * sizeof(DIRECTION));
+        memcpy(buff.directions, directions, 12 * sizeof(DIRECTION));
+
+        map.mapPointsWithDirections = buff;
+
         map.mapTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/maps/WillowstreetTD.jpg");
-        map.pointPath = malloc(12 * sizeof(SDL_Point));
-        memcpy(map.pointPath, points, 12 * sizeof(SDL_Point));
         break;
     
     default:

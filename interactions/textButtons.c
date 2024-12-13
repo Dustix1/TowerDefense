@@ -4,6 +4,7 @@
 #include "../utils/gameStatus.h"
 #include "../scenes/Menu/menuScene.h"
 #include "../scenes/Game/gameScene.h"
+#include "../scenes/Game/Enemy/enemy.h"
 
 Button** textButtons = NULL;
 size_t buttonCount = 0;
@@ -50,6 +51,8 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
         freeTextButtons();
         initGameScene(renderer, WILLOW); // MAKE SELECTION POSSIBLE LATER
         changeScene(GAME);
+    } else if (strcmp(temp->ID, "spwnRndEne") == 0) {
+        spawnNewEnemy(rand() % 5, renderer);
     }
 }
 

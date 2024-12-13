@@ -9,11 +9,19 @@ typedef enum {
     DEOGEN
 } ENEMYTYPE;
 
+typedef enum {
+    UP,
+    LEFT,
+    RIGHT,
+    DOWN
+} DIRECTION;
+
 typedef struct {
     SDL_Texture* texture;
     ENEMYTYPE type;
-    SDL_Rect rect;
+    SDL_FRect rect;
     unsigned int currPointIndex;
+    float speed;
 } ENEMY;
 
 extern ENEMY* enemies;
