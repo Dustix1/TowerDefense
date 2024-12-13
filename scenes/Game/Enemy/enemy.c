@@ -5,6 +5,7 @@
 
 #include "../Map/map.h"
 #include "../../../utils/gameStatus.h"
+#include "../Friendly/player.h"
 
 ENEMY* enemies;
 unsigned int enemyCount = 0;
@@ -71,6 +72,27 @@ void spawnNewEnemy(ENEMYTYPE type, SDL_Renderer* renderer) {
     enemies[enemyCount - 1] = buff;
 }
 
+void reachedPlayerBase(int index) {
+    ENEMY* buff = malloc((enemyCount - 1) * sizeof(ENEMY));
+    bool wasSkipped = false;
+    for (size_t i = 0; i < enemyCount; i++)
+    {
+        if (i != index && !wasSkipped) {
+            buff[i] = enemies[i];
+        } else if (i != index) {
+            buff[i - 1] = enemies[i];
+        } else {
+            wasSkipped = true;
+        }
+    }
+
+    free(enemies);
+    enemies = malloc((--enemyCount) * sizeof(ENEMY));
+    enemies = buff;
+
+    damagePlayer(2);
+}
+
 void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
     SDL_FRect result;
     for (size_t i = 0; i < enemyCount; i++)
@@ -100,9 +122,9 @@ void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
             }
         } else {
             enemies[i].currPointIndex++;
+            if (map.mapPointsWithDirections.directions[enemies[i].currPointIndex] == -1) reachedPlayerBase(i);
         }
     }
-    
 }
 
 void renderEnemies(SDL_Renderer* renderer) {

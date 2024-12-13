@@ -29,3 +29,4 @@ extern ENEMY* enemies;
 void spawnNewEnemy(ENEMYTYPE type, SDL_Renderer* renderer);
 void moveEnemiesTowardsCurrPoint();
 void renderEnemies(SDL_Renderer* renderer);
+void reachedPlayerBase(int index);

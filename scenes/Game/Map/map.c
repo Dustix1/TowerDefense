@@ -8,14 +8,14 @@ void createMap(SelectedMap selectedMap, SDL_Renderer* renderer) {
     switch (selectedMap)
     {
     case WILLOW:
-        SDL_Point points[12] = {{605, 850}, {605, 500}, {218, 500}, {218, 309}, {1106, 309}, {1106, 70}, {1759, 70}, {1759, 210}, {1310, 210},
-                                {1310, 335}, {1500, 335}, {1500, 750}};
-        DIRECTION directions[12] = {-1, UP, LEFT, UP, RIGHT, UP, RIGHT, DOWN, LEFT, DOWN, RIGHT, DOWN};
+        SDL_Point points[13] = {{605, 850}, {605, 500}, {218, 500}, {218, 309}, {1106, 309}, {1106, 70}, {1759, 70}, {1759, 210}, {1310, 210},
+                                {1310, 335}, {1500, 335}, {1500, 750}, {0, 0}};
+        DIRECTION directions[13] = {-1, UP, LEFT, UP, RIGHT, UP, RIGHT, DOWN, LEFT, DOWN, RIGHT, DOWN, -1};
 
-        buff.points = malloc(12 * sizeof(SDL_Point));
-        memcpy(buff.points, points, 12 * sizeof(SDL_Point));
-        buff.directions = malloc(12 * sizeof(DIRECTION));
-        memcpy(buff.directions, directions, 12 * sizeof(DIRECTION));
+        buff.points = malloc(13 * sizeof(SDL_Point));
+        memcpy(buff.points, points, 13 * sizeof(SDL_Point));
+        buff.directions = malloc(13 * sizeof(DIRECTION));
+        memcpy(buff.directions, directions, 13 * sizeof(DIRECTION));
 
         map.mapPointsWithDirections = buff;
 
