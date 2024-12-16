@@ -1,12 +1,11 @@
 #include "player.h"
 
-float hp = 500;
-int money;
+Player player;
 
 void damagePlayer(float damage) {
-    hp -= damage;
+    player.hp -= damage;
 }
 
 void addMoney(int amount) {
-    money += amount;
+    player.money += amount;
 }

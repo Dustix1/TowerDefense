@@ -47,23 +47,23 @@ void spawnNewEnemy(ENEMYTYPE type, SDL_Renderer* renderer) {
     switch (type)
     {
     case SPIRIT:
-        buff.speed = 100;
+        buff.speed = 125;
         buff.texture = spiritTexture;
         break;
     case SHADE:
-        buff.speed = 100;
+        buff.speed = 125;
         buff.texture = shadeTexture;
         break;
     case GORYO:
-        buff.speed = 100;
+        buff.speed = 125;
         buff.texture = goryoTexture;
         break;
     case DEOGEN:
-        buff.speed = 200;
+        buff.speed = 300;
         buff.texture = deogenTexture;
         break;
     default:
-        buff.speed = 150;
+        buff.speed = 350;
         buff.texture = missingTexture;
         break;
     }
@@ -90,7 +90,7 @@ void reachedPlayerBase(int index) {
     enemies = malloc((--enemyCount) * sizeof(ENEMY));
     enemies = buff;
 
-    damagePlayer(2);
+    damagePlayer(7.5f);
 }
 
 void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
@@ -99,8 +99,8 @@ void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
     {
         SDL_FRect pointFRect = createFRect(map.mapPointsWithDirections.points[enemies[i].currPointIndex].x,
                                            map.mapPointsWithDirections.points[enemies[i].currPointIndex].y, 1, 1);
-        SDL_FRect enemyHitboxFRect = createFRect(enemies[i].rect.x + offsetX - 2,
-                                                 enemies[i].rect.y + offsetY - 2, 4, 4);
+        SDL_FRect enemyHitboxFRect = createFRect(enemies[i].rect.x + offsetX - 5,
+                                                 enemies[i].rect.y + offsetY - 5, 10, 10);
         if (SDL_IntersectFRect(&enemyHitboxFRect, &pointFRect, &result) != SDL_TRUE) {
             switch (map.mapPointsWithDirections.directions[enemies[i].currPointIndex])
             {
