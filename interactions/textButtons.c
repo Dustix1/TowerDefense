@@ -5,6 +5,7 @@
 #include "../scenes/Menu/menuScene.h"
 #include "../scenes/Game/gameScene.h"
 #include "../scenes/Game/Enemy/enemy.h"
+#include "../scenes/Game/Enemy/waves.h"
 
 Button** textButtons = NULL;
 size_t buttonCount = 0;
@@ -52,7 +53,9 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
         initGameScene(renderer, WILLOW); // MAKE SELECTION POSSIBLE LATER
         changeScene(GAME);
     } else if (strcmp(temp->ID, "spwnRndEne") == 0) {
-        spawnNewEnemy(rand() % 5, renderer);
+        spawnNewEnemy(rand() % 5);
+    } else if (strcmp(temp->ID, "startWave") == 0) {
+        startWave();
     }
 }
 

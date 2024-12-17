@@ -14,6 +14,7 @@
 #include "Friendly/player.h"
 #include "Map/map.h"
 #include "Enemy/enemy.h"
+#include "Enemy/waves.h"
 
 static TTF_Font* font;
 
@@ -35,9 +36,17 @@ Text hpValue;
 Text moneyLabel;
 Text moneyValue;
 
+SDL_Color startWaveButtonColor;
+Text startWaveButtonText;
+
 void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
+    loadTextures(renderer);
+
     player.hp = 500;
     player.money = 50;
+
+    currentWave = 0;
+    loadNextWave();
 
     createMap(selectedMap, renderer);
 
@@ -74,7 +83,7 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     hpValue.text = malloc(5 * sizeof(char));
 
     moneyLabel.font = font;
-    moneyLabel.color = createColor("FFFFFF", 255); // 168118
+    moneyLabel.color = createColor("FFFFFF", 255);
     moneyLabel.rect = createRect(225, gameStatus.windowSizeY - 215, 100, 50);
     moneyLabel.text = "Money";
 
@@ -82,14 +91,20 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     moneyValue.color = createColor("168118", 255);
     moneyValue.rect = createRect(230, gameStatus.windowSizeY - 170, 75, 50);
     moneyValue.text = malloc(5 * sizeof(char));
+
+    startWaveButtonText.font = font;
+    startWaveButtonColor = createColor("FFFFFF", 255);
+    startWaveButtonText.color = startWaveButtonColor;
+    startWaveButtonText.rect = createRect(gameStatus.windowSizeX - 200, gameStatus.windowSizeY - 215, 175, 50);
+    startWaveButtonText.text = "Start Wave";
+    makeButton(&startWaveButtonText, createColor("AAAAAA", 255), "startWave");
 }
 
 void renderGame(SDL_Renderer* renderer) {
     updateDeltaTime();
-    /*int mouseX, mouseY;
-    SDL_GetMouseState(&mouseX, &mouseY);
-    double angle = atan2(temp.h / 2 - mouseY, temp.w / 2 - mouseX) * (180 / M_PI) - 90;
-    SDL_RenderCopyEx(renderer, background, NULL, &temp, angle, NULL, SDL_FLIP_NONE);*/
+    runWave(renderer);
+
+    
     SDL_RenderCopy(renderer, map.mapTexture, NULL, &map.mapRect);
 
     /*SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
@@ -116,11 +131,17 @@ void renderGame(SDL_Renderer* renderer) {
     sprintf(moneyValue.text, "%4d", player.money);
     renderText(renderer, &moneyValue);
 
+    renderText(renderer, &startWaveButtonText);
+    startWaveButtonText.color = startWaveButtonColor;
 
 
 
 
 
+    /*int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    double angle = atan2(temp.h / 2 - mouseY, temp.w / 2 - mouseX) * (180 / M_PI) - 90;
+    SDL_RenderCopyEx(renderer, background, NULL, &temp, angle, NULL, SDL_FLIP_NONE);*/
 
     renderText(renderer, &spawnEnemy);
     spawnEnemy.color = spawnEnemyColor;

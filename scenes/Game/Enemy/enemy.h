@@ -25,8 +25,10 @@ typedef struct {
 } ENEMY;
 
 extern ENEMY* enemies;
+extern unsigned int enemyCount;
 
-void spawnNewEnemy(ENEMYTYPE type, SDL_Renderer* renderer);
+void spawnNewEnemy(ENEMYTYPE type);
 void moveEnemiesTowardsCurrPoint();
 void renderEnemies(SDL_Renderer* renderer);
 void reachedPlayerBase(int index);
+void loadTextures(SDL_Renderer* renderer);

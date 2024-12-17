@@ -21,18 +21,15 @@ static SDL_Texture* missingTexture;
 
 bool loadedTextures = false;
 
-void spawnNewEnemy(ENEMYTYPE type, SDL_Renderer* renderer) {
+void loadTextures(SDL_Renderer* renderer) {
+    spiritTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Spirit.png");
+    shadeTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Shade.png");
+    goryoTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Goryo.png");
+    deogenTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Deogen.png");
+    missingTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/missingTexture.jpg");
+}
 
-    if (!loadedTextures) {
-        spiritTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Spirit.png");
-        shadeTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Shade.png");
-        goryoTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Goryo.png");
-        deogenTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Deogen.png");
-        missingTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/missingTexture.jpg");
-
-        loadedTextures = true;
-    }
-
+void spawnNewEnemy(ENEMYTYPE type) {
     if (enemyCount == 0) {
         enemies = malloc((enemyCount + 1) * sizeof(ENEMY));
     } else {
@@ -51,7 +48,7 @@ void spawnNewEnemy(ENEMYTYPE type, SDL_Renderer* renderer) {
         buff.texture = spiritTexture;
         break;
     case SHADE:
-        buff.speed = 125;
+        buff.speed = 110;
         buff.texture = shadeTexture;
         break;
     case GORYO:

@@ -8,7 +8,7 @@ void createMap(SelectedMap selectedMap, SDL_Renderer* renderer) {
     switch (selectedMap)
     {
     case WILLOW:
-        SDL_Point points[13] = {{605, 850}, {605, 500}, {218, 500}, {218, 309}, {1106, 309}, {1106, 70}, {1759, 70}, {1759, 210}, {1310, 210},
+        SDL_Point points[13] = {{605, 900}, {605, 500}, {218, 500}, {218, 309}, {1106, 309}, {1106, 70}, {1759, 70}, {1759, 210}, {1310, 210},
                                 {1310, 335}, {1500, 335}, {1500, 750}, {0, 0}};
         DIRECTION directions[13] = {-1, UP, LEFT, UP, RIGHT, UP, RIGHT, DOWN, LEFT, DOWN, RIGHT, DOWN, -1};
 
