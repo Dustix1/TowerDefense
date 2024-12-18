@@ -7,7 +7,7 @@
 #include "utils/rectStuff.h"
 #include "utils/gameStatus.h"
 #include "utils/text.h"
-#include "interactions/textButtons.h"
+#include "interactions/buttons.h"
 #include "interactions/mouse.h"
 #include "scenes/Menu/menuScene.h"
 #include "scenes/Game/gameScene.h"
@@ -74,7 +74,7 @@ int main()
 
     // Uvolnění prostředků
     if (gameStatus.currentScene == MENU) freeMenuScene();
-    freeTextButtons();
+    freeButtons();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

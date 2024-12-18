@@ -5,7 +5,7 @@
 
 #include "../../utils/rectStuff.h"
 #include "../../utils/text.h"
-#include "../../interactions/textButtons.h"
+#include "../../interactions/buttons.h"
 #include "../../interactions/mouse.h"
 #include "../../utils/gameStatus.h"
 
@@ -36,7 +36,8 @@ void initMenuScene()
     w = 300;
     startBtnText->rect = createRect((gameStatus.windowSizeX - w) / 2, 225, w, 125);
     startBtnText->font = font;
-    makeButton(startBtnText, createColor("00FF00", 255), "MenuStartBtn");
+    SDL_Color startHilightColor = createColor("00FF00", 255);
+    makeButton(startBtnText, startBtnText->rect, &startHilightColor, "MenuStartBtn", TEXTBUTTON);
 
     quitBtnText = malloc(sizeof(Text));
     quitBtnText->text = "Quit";
@@ -45,7 +46,8 @@ void initMenuScene()
     w = 300;
     quitBtnText->rect = createRect((gameStatus.windowSizeX - w) / 2, startBtnText->rect.y + startBtnText->rect.h + 25, w, 125);
     quitBtnText->font = font;
-    makeButton(quitBtnText, createColor("FF0000", 255), "QuitBtn");
+    SDL_Color quitHilightColor = createColor("FF0000", 255);
+    makeButton(quitBtnText, quitBtnText->rect, &quitHilightColor, "QuitBtn", TEXTBUTTON);
 }
 
 void renderMenu(SDL_Renderer* renderer)

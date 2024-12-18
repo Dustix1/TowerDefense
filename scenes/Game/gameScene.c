@@ -7,7 +7,7 @@
 
 #include "../../utils/rectStuff.h"
 #include "../../utils/text.h"
-#include "../../interactions/textButtons.h"
+#include "../../interactions/buttons.h"
 #include "../../interactions/rect.h"
 #include "../../utils/gameStatus.h"
 #include "../../utils/rectStuff.h"
@@ -64,7 +64,8 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     spawnEnemy.font = font;
     spawnEnemy.rect = createRect(20, 20, 300, 100);
     spawnEnemy.text = "Spawn Random Enemy";
-    makeButton(&spawnEnemy, createColor("00FF22", 255), "spwnRndEne");
+    SDL_Color spawnEnemyHilightColor = createColor("00FF22", 255);
+    makeButton(&spawnEnemy, spawnEnemy.rect, &spawnEnemyHilightColor, "spwnRndEne", TEXTBUTTON);
 
     bottomUIBG = IMG_LoadTexture(renderer, "../scenes/Game/images/UI/woodbg.jpg");
     bottomUIBGRect = createRect(0, gameStatus.windowSizeY - 225, gameStatus.windowSizeX, 225);
@@ -97,7 +98,8 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     startWaveButtonText.color = startWaveButtonColor;
     startWaveButtonText.rect = createRect(gameStatus.windowSizeX - 200, gameStatus.windowSizeY - 215, 175, 50);
     startWaveButtonText.text = "Start Wave";
-    makeButton(&startWaveButtonText, createColor("AAAAAA", 255), "startWave");
+    SDL_Color startWaveButtonHilightColor = createColor("AAAAAA", 255);
+    makeButton(&startWaveButtonText, startWaveButtonText.rect, &startWaveButtonHilightColor, "startWave", TEXTBUTTON);
 }
 
 void renderGame(SDL_Renderer* renderer) {

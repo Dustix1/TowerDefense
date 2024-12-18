@@ -1,4 +1,4 @@
-#include "textButtons.h"
+#include "buttons.h"
 
 #include "mouse.h"
 #include "../utils/gameStatus.h"
@@ -7,33 +7,36 @@
 #include "../scenes/Game/Enemy/enemy.h"
 #include "../scenes/Game/Enemy/waves.h"
 
-Button** textButtons = NULL;
+Button** buttons = NULL;
 size_t buttonCount = 0;
 
-void makeButton(Text* text, SDL_Color hilightColor, char* id) {
-    Button** tmp = realloc(textButtons, (buttonCount +1) * sizeof(Text*));
-    textButtons = tmp;
+void makeButton(Text* text, SDL_Rect rect, SDL_Color* hilightColor, char* id, ButtonType type) {
+    Button** tmp = realloc(buttons, (buttonCount +1) * sizeof(Text*));
+    buttons = tmp;
 
     Button* temp = malloc(sizeof(Button));
-    temp->text = text;
-    temp->hilightColor = hilightColor;
+    if (text != NULL) temp->text = text;
+    if (hilightColor != NULL) temp->hilightColor = *hilightColor;
+    temp->rect = rect;
     temp->ID = id;
+    temp->type = type;
 
-    textButtons[buttonCount] = temp;
+    buttons[buttonCount] = temp;
     buttonCount++;
 }
 
 void highlightButtons() {
     for (size_t i = 0; i < buttonCount; i++)
     {
-        if (isMouseOnRect(textButtons[i]->text->rect)) textButtons[i]->text->color = textButtons[i]->hilightColor;
+        if (buttons[i]->type == RECTBUTTON) continue;
+        if (isMouseOnRect(buttons[i]->rect)) buttons[i]->text->color = buttons[i]->hilightColor;
     }
 }
 
 bool isMouseOnButton() {
     for (size_t i = 0; i < buttonCount; i++)
     {
-        if (isMouseOnRect(textButtons[i]->text->rect)) return true;
+        if (isMouseOnRect(buttons[i]->rect)) return true;
     }
     return false;
 }
@@ -42,14 +45,14 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
     Button* temp = malloc(sizeof(Button));
     for (size_t i = 0; i < buttonCount; i++)
     {
-        if (isMouseOnRect(textButtons[i]->text->rect)) temp = textButtons[i];
+        if (isMouseOnRect(buttons[i]->rect)) temp = buttons[i];
     }
     
     if (strcmp(temp->ID, "QuitBtn") == 0) {
         gameStatus.running = false;
     } else if (strcmp(temp->ID, "MenuStartBtn") == 0) {
         freeMenuScene();
-        freeTextButtons();
+        freeButtons();
         initGameScene(renderer, WILLOW); // MAKE SELECTION POSSIBLE LATER
         changeScene(GAME);
     } else if (strcmp(temp->ID, "spwnRndEne") == 0) {
@@ -59,11 +62,11 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
     }
 }
 
-void freeTextButtons() {
+void freeButtons() {
     for (size_t i = 0; i < buttonCount; i++) {
-        free(textButtons[i]);
+        free(buttons[i]);
     }
     buttonCount = 0;
-    free(textButtons);
-    textButtons = NULL;
+    free(buttons);
+    buttons = NULL;
 }
