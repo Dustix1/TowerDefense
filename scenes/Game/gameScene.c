@@ -75,7 +75,7 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     hpLabel.font = font;
     hpLabel.color = createColor("FFFFFF", 255);
     hpLabel.rect = createRect(20, gameStatus.windowSizeY - 215, 160, 50);
-    hpLabel.text = "Tower Health";
+    hpLabel.text = "Truck Health";
 
     hpValue.font = font;
     hpValue.color = createColor("FF3333", 255);
