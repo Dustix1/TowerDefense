@@ -12,6 +12,7 @@ typedef enum {
 
 typedef struct {
     Text* text;
+    SDL_Texture* texture;
     SDL_Rect rect;
     SDL_Color hilightColor;
     ButtonType type;
@@ -21,8 +22,10 @@ typedef struct {
 
 
 void highlightButtons();
-void makeButton(Text* text, SDL_Rect rect, SDL_Color* hilightColor, char* id, ButtonType type);
+void makeButtonsLookInActive();
+void makeButton(Text* text, SDL_Rect rect, SDL_Texture* texture, SDL_Color* hilightColor, char* id, ButtonType type);
 void freeButtons();
+Button* searchForButton(char* buttonId);
 
 bool isMouseOnButton();
 void makeButtonsDoSomething(SDL_Renderer* renderer);

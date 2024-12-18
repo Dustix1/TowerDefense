@@ -37,7 +37,7 @@ void initMenuScene()
     startBtnText->rect = createRect((gameStatus.windowSizeX - w) / 2, 225, w, 125);
     startBtnText->font = font;
     SDL_Color startHilightColor = createColor("00FF00", 255);
-    makeButton(startBtnText, startBtnText->rect, &startHilightColor, "MenuStartBtn", TEXTBUTTON);
+    makeButton(startBtnText, startBtnText->rect, NULL, &startHilightColor, "MenuStartBtn", TEXTBUTTON);
 
     quitBtnText = malloc(sizeof(Text));
     quitBtnText->text = "Quit";
@@ -47,7 +47,7 @@ void initMenuScene()
     quitBtnText->rect = createRect((gameStatus.windowSizeX - w) / 2, startBtnText->rect.y + startBtnText->rect.h + 25, w, 125);
     quitBtnText->font = font;
     SDL_Color quitHilightColor = createColor("FF0000", 255);
-    makeButton(quitBtnText, quitBtnText->rect, &quitHilightColor, "QuitBtn", TEXTBUTTON);
+    makeButton(quitBtnText, quitBtnText->rect, NULL, &quitHilightColor, "QuitBtn", TEXTBUTTON);
 }
 
 void renderMenu(SDL_Renderer* renderer)

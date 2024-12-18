@@ -7,10 +7,11 @@
 
 #include "../../utils/rectStuff.h"
 #include "../../utils/text.h"
-#include "../../interactions/buttons.h"
-#include "../../interactions/rect.h"
 #include "../../utils/gameStatus.h"
 #include "../../utils/rectStuff.h"
+#include "../../interactions/buttons.h"
+#include "../../interactions/rect.h"
+#include "../../interactions/mouse.h"
 #include "Friendly/player.h"
 #include "Map/map.h"
 #include "Enemy/enemy.h"
@@ -36,6 +37,8 @@ Text hpValue;
 Text moneyLabel;
 Text moneyValue;
 
+SDL_Texture* startWaveButton;
+SDL_Rect startWaveButtonRect;
 SDL_Color startWaveButtonColor;
 Text startWaveButtonText;
 
@@ -65,7 +68,7 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     spawnEnemy.rect = createRect(20, 20, 300, 100);
     spawnEnemy.text = "Spawn Random Enemy";
     SDL_Color spawnEnemyHilightColor = createColor("00FF22", 255);
-    makeButton(&spawnEnemy, spawnEnemy.rect, &spawnEnemyHilightColor, "spwnRndEne", TEXTBUTTON);
+    makeButton(&spawnEnemy, spawnEnemy.rect, NULL, &spawnEnemyHilightColor, "spwnRndEne", TEXTBUTTON);
 
     bottomUIBG = IMG_LoadTexture(renderer, "../scenes/Game/images/UI/woodbg.jpg");
     bottomUIBGRect = createRect(0, gameStatus.windowSizeY - 225, gameStatus.windowSizeX, 225);
@@ -93,13 +96,9 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     moneyValue.rect = createRect(230, gameStatus.windowSizeY - 170, 75, 50);
     moneyValue.text = malloc(5 * sizeof(char));
 
-    startWaveButtonText.font = font;
-    startWaveButtonColor = createColor("FFFFFF", 255);
-    startWaveButtonText.color = startWaveButtonColor;
-    startWaveButtonText.rect = createRect(gameStatus.windowSizeX - 200, gameStatus.windowSizeY - 215, 175, 50);
-    startWaveButtonText.text = "Start Wave";
-    SDL_Color startWaveButtonHilightColor = createColor("AAAAAA", 255);
-    makeButton(&startWaveButtonText, startWaveButtonText.rect, &startWaveButtonHilightColor, "startWave", TEXTBUTTON);
+    startWaveButton = IMG_LoadTexture(renderer, "../scenes/Game/images/UI/startWaveButton.png");
+    startWaveButtonRect = createRect(gameStatus.windowSizeX - 215, gameStatus.windowSizeY - 215, 200, 200);
+    makeButton(NULL, startWaveButtonRect, startWaveButton, NULL, "startWave", RECTBUTTON);
 }
 
 void renderGame(SDL_Renderer* renderer) {
@@ -133,8 +132,12 @@ void renderGame(SDL_Renderer* renderer) {
     sprintf(moneyValue.text, "%4d", player.money);
     renderText(renderer, &moneyValue);
 
-    renderText(renderer, &startWaveButtonText);
-    startWaveButtonText.color = startWaveButtonColor;
+    highlightButtons();
+    makeButtonsLookInActive();
+
+    if (isMouseOnRect(startWaveButtonRect) && searchForButton("startWave")->active) SDL_SetTextureColorMod(startWaveButton, 225, 225, 255);
+    SDL_RenderCopy(renderer, startWaveButton, NULL, &startWaveButtonRect);
+    SDL_SetTextureColorMod(startWaveButton, 255, 255, 255);
 
 
 
@@ -147,8 +150,6 @@ void renderGame(SDL_Renderer* renderer) {
 
     renderText(renderer, &spawnEnemy);
     spawnEnemy.color = spawnEnemyColor;
-
-    highlightButtons();
 
 
 

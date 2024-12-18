@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "../../../utils/gameStatus.h"
+#include "../../../interactions/buttons.h"
 #include "enemy.h"
 
 static FILE *waveFile;
@@ -92,10 +93,14 @@ void runWave(SDL_Renderer* renderer) {
 void startWave() {
     nextIterTime = SDL_GetTicks64() + waveData[waveDataIndex++];
     waveRunning = true;
+    Button* startWaveButton = searchForButton("startWave");
+    startWaveButton->active = false;
 }
 
 void endWave() {
     waveRunning = false;
     currentWave++;
     loadNextWave();
+    Button* startWaveButton = searchForButton("startWave");
+    startWaveButton->active = true;
 }
