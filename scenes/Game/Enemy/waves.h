@@ -9,3 +9,4 @@ void readWave();
 void runWave(SDL_Renderer* renderer);
 void startWave();
 void endWave();
+void resetWaves();

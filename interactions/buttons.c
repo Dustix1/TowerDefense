@@ -85,6 +85,9 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
             spawnNewEnemy(rand() % 5);
         } else if (strcmp(temp->ID, "startWave") == 0) {
             startWave();
+        } else if (strcmp(temp->ID, "backToMenu") == 0) {
+            initMenuScene();
+            changeScene(MENU);
         }
     }
 }
@@ -99,6 +102,7 @@ void freeButtons() {
 }
 
 Button* searchForButton(char* buttonId) {
+    if (buttonCount == 0) return NULL;
     for (size_t i = 0; i < buttonCount; i++)
     {
         if (strcmp(buttons[i]->ID, buttonId) == 0) return buttons[i];

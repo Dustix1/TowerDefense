@@ -6,7 +6,9 @@ extern double deltaTime;
 
 typedef enum {
     MENU,
-    GAME
+    GAME,
+    WIN,
+    LOSE
 } CurrentSceneEnum;
 
 typedef enum {

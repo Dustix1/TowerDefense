@@ -12,6 +12,7 @@
 #include "../../interactions/buttons.h"
 #include "../../interactions/rect.h"
 #include "../../interactions/mouse.h"
+#include "../End/endScene.h"
 #include "Friendly/player.h"
 #include "Map/map.h"
 #include "Enemy/enemy.h"
@@ -36,6 +37,7 @@ Text hpLabel;
 Text hpValue;
 Text moneyLabel;
 Text moneyValue;
+Text waveNum;
 
 SDL_Texture* startWaveButton;
 SDL_Rect startWaveButtonRect;
@@ -43,9 +45,11 @@ SDL_Color startWaveButtonColor;
 Text startWaveButtonText;
 
 void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
+    font = TTF_OpenFont("../fonts/lazy_dog.ttf", 120);
+
     loadTextures(renderer);
 
-    player.hp = 500;
+    player.hp = 100;
     player.money = 50;
 
     currentWave = 0;
@@ -53,14 +57,13 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
 
     createMap(selectedMap, renderer);
 
-    font = TTF_OpenFont("../fonts/Arial.ttf", 60);
-
-    pointFinder.color = createColor("FF0000", 255);
-    pointFinder.font = font;
-    pointFinder.rect = createRect(5, gameStatus.windowSizeY - 100, 350, 100);
-
     van = IMG_LoadTexture(renderer, "../scenes/Game/images/UI/van.png");
     vanRect = createRect(gameStatus.windowSizeX - 550, gameStatus.windowSizeY - 450, 350, 200);
+
+
+    /*pointFinder.color = createColor("FF0000", 255);
+    pointFinder.font = font;
+    pointFinder.rect = createRect(5, gameStatus.windowSizeY - 100, 350, 100);
     
     spawnEnemyColor = createColor("0022FF", 255);
     spawnEnemy.color = spawnEnemyColor;
@@ -68,7 +71,7 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     spawnEnemy.rect = createRect(20, 20, 300, 100);
     spawnEnemy.text = "Spawn Random Enemy";
     SDL_Color spawnEnemyHilightColor = createColor("00FF22", 255);
-    makeButton(&spawnEnemy, spawnEnemy.rect, NULL, &spawnEnemyHilightColor, "spwnRndEne", TEXTBUTTON);
+    makeButton(&spawnEnemy, spawnEnemy.rect, NULL, &spawnEnemyHilightColor, "spwnRndEne", TEXTBUTTON);*/
 
     bottomUIBG = IMG_LoadTexture(renderer, "../scenes/Game/images/UI/woodbg.jpg");
     bottomUIBGRect = createRect(0, gameStatus.windowSizeY - 225, gameStatus.windowSizeX, 225);
@@ -84,7 +87,7 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     hpValue.font = font;
     hpValue.color = createColor("FF3333", 255);
     hpValue.rect = createRect(60, gameStatus.windowSizeY - 170, 75, 50);
-    hpValue.text = malloc(5 * sizeof(char));
+    hpValue.text = malloc(10 * sizeof(char));
 
     moneyLabel.font = font;
     moneyLabel.color = createColor("FFFFFF", 255);
@@ -94,7 +97,12 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     moneyValue.font = font;
     moneyValue.color = createColor("168118", 255);
     moneyValue.rect = createRect(230, gameStatus.windowSizeY - 170, 75, 50);
-    moneyValue.text = malloc(5 * sizeof(char));
+    moneyValue.text = malloc(10 * sizeof(char));
+
+    waveNum.font = font;
+    waveNum.color = createColor("FFFFFF", 255);
+    waveNum.rect = createRect(30, gameStatus.windowSizeY - 105, 300, 100);
+    waveNum.text = malloc(10 * sizeof(char));
 
     startWaveButton = IMG_LoadTexture(renderer, "../scenes/Game/images/UI/startWaveButton.png");
     startWaveButtonRect = createRect(gameStatus.windowSizeX - 215, gameStatus.windowSizeY - 215, 200, 200);
@@ -103,8 +111,6 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
 
 void renderGame(SDL_Renderer* renderer) {
     updateDeltaTime();
-    runWave(renderer);
-
     
     SDL_RenderCopy(renderer, map.mapTexture, NULL, &map.mapRect);
 
@@ -116,7 +122,7 @@ void renderGame(SDL_Renderer* renderer) {
     renderEnemies(renderer);
 
     SDL_RenderCopy(renderer, van, NULL, &vanRect);
-    
+
     // UI RENDER
     
     SDL_RenderCopy(renderer, bottomUIBG, NULL, &bottomUIBGRect);
@@ -132,6 +138,9 @@ void renderGame(SDL_Renderer* renderer) {
     sprintf(moneyValue.text, "%4d", player.money);
     renderText(renderer, &moneyValue);
 
+    sprintf(waveNum.text, "Wave %d", currentWave + 1);
+    renderText(renderer, &waveNum);
+
     highlightButtons();
     makeButtonsLookInActive();
 
@@ -139,8 +148,14 @@ void renderGame(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, startWaveButton, NULL, &startWaveButtonRect);
     SDL_SetTextureColorMod(startWaveButton, 255, 255, 255);
 
+    if (player.hp <= 0) {
+        freeGameScene();
+        resetWaves();
+        initEndScene();
+        return changeScene(LOSE);
+    }
 
-
+    runWave(renderer);
 
 
     /*int mouseX, mouseY;
@@ -148,7 +163,7 @@ void renderGame(SDL_Renderer* renderer) {
     double angle = atan2(temp.h / 2 - mouseY, temp.w / 2 - mouseX) * (180 / M_PI) - 90;
     SDL_RenderCopyEx(renderer, background, NULL, &temp, angle, NULL, SDL_FLIP_NONE);*/
 
-    renderText(renderer, &spawnEnemy);
+    /*renderText(renderer, &spawnEnemy);
     spawnEnemy.color = spawnEnemyColor;
 
 
@@ -160,12 +175,14 @@ void renderGame(SDL_Renderer* renderer) {
     char txt[50];
     snprintf(txt, sizeof(txt), "%d X %d", mouseX, mouseY);
     pointFinder.text = txt;
-    renderText(renderer, &pointFinder);
+    renderText(renderer, &pointFinder);*/
 }
 
 void freeGameScene() {
     free(hpValue.text);
     free(moneyValue.text);
+    free(waveNum.text);
+    freeButtons();
     SDL_DestroyTexture(map.mapTexture);
     TTF_CloseFont(font);
 }

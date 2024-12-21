@@ -11,6 +11,7 @@
 #include "interactions/mouse.h"
 #include "scenes/Menu/menuScene.h"
 #include "scenes/Game/gameScene.h"
+#include "scenes/End/endScene.h"
 
 int main()
 {
@@ -65,8 +66,10 @@ int main()
         SDL_RenderClear(renderer);
         if (gameStatus.currentScene == MENU) {
             renderMenu(renderer);
-        } else {
+        } else if (gameStatus.currentScene == GAME) {
             renderGame(renderer);
+        } else {
+            renderEndScene(renderer);
         }
         SDL_RenderPresent(renderer);
         

@@ -6,6 +6,8 @@
 
 #include "../../../utils/gameStatus.h"
 #include "../../../interactions/buttons.h"
+#include "../gameScene.h"
+#include "../../End/endScene.h"
 #include "enemy.h"
 
 static FILE *waveFile;
@@ -34,8 +36,10 @@ void loadNextWave() {
 
     waveFile = fopen(filePath, "r");
     if (waveFile == NULL) {
-        // GAME COMPLETE - DO SOMETHING :3
-        //gameStatus.running = 0;
+        resetWaves();
+        freeGameScene();
+        changeScene(WIN);
+        return initEndScene();
     }
 
     fgets(wave, 1000, waveFile);
@@ -102,5 +106,13 @@ void endWave() {
     currentWave++;
     loadNextWave();
     Button* startWaveButton = searchForButton("startWave");
-    startWaveButton->active = true;
+    if (startWaveButton != NULL) startWaveButton->active = true;
+}
+
+void resetWaves() {
+    waveRunning = false;
+    currentWave = 0;
+    nextIterTime = 0;
+    waveDataIndex = 0;
+    waveDataEndIndex = 0;
 }

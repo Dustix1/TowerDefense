@@ -91,6 +91,8 @@ void reachedPlayerBase(int index) {
 }
 
 void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
+    if (enemyCount == 0) return;
+
     SDL_FRect result;
     for (size_t i = 0; i < enemyCount; i++)
     {
@@ -125,6 +127,8 @@ void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
 }
 
 void renderEnemies(SDL_Renderer* renderer) {
+    if (enemyCount == 0) return;
+    
     for (size_t i = 0; i < enemyCount; i++)
     {
         SDL_Rect buff = createRect(enemies[i].rect.x, enemies[i].rect.y, enemies[i].rect.w, enemies[i].rect.h);

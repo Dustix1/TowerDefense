@@ -19,19 +19,19 @@ SDL_Color titleColor;
 
 void initMenuScene()
 {
-    font = TTF_OpenFont("../fonts/Arial.ttf", 60);
+    font = TTF_OpenFont("../fonts/lazy_dog.ttf", 120);
 
     int w;
     title = malloc(sizeof(Text));
-    title->text = "Epic Tower Defense";
+    title->text = "Phasmophobia Tower Defense";
     titleColor = createColor("FFFFFF", 255);
     title->color = titleColor;
-    title->rect = createRect(25, 25, gameStatus.windowSizeX - 50, 125);
+    title->rect = createRect(125, 50, gameStatus.windowSizeX - 275, 125);
     title->font = font;
 
     startBtnText = malloc(sizeof(Text));
     startBtnText->text = "Start";
-    startColor = createColor("FFA500", 255);
+    startColor = createColor("00CC00", 255);
     startBtnText->color = startColor;
     w = 300;
     startBtnText->rect = createRect((gameStatus.windowSizeX - w) / 2, 225, w, 125);
@@ -41,7 +41,7 @@ void initMenuScene()
 
     quitBtnText = malloc(sizeof(Text));
     quitBtnText->text = "Quit";
-    quitColor = createColor("DD8300", 255);
+    quitColor = createColor("BB0000", 255);
     quitBtnText->color = quitColor;
     w = 300;
     quitBtnText->rect = createRect((gameStatus.windowSizeX - w) / 2, startBtnText->rect.y + startBtnText->rect.h + 25, w, 125);
