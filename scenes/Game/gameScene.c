@@ -19,6 +19,7 @@
 #include "Enemy/waves.h"
 
 static TTF_Font* font;
+static unsigned int vanDamageAnimEndTime = 0;
 
 Text pointFinder;
 Text spawnEnemy;
@@ -122,6 +123,7 @@ void renderGame(SDL_Renderer* renderer) {
     renderEnemies(renderer);
 
     SDL_RenderCopy(renderer, van, NULL, &vanRect);
+    if (SDL_GetTicks64() >= vanDamageAnimEndTime) SDL_SetTextureColorMod(van, 255, 255, 255);
 
     // UI RENDER
     
@@ -176,6 +178,11 @@ void renderGame(SDL_Renderer* renderer) {
     snprintf(txt, sizeof(txt), "%d X %d", mouseX, mouseY);
     pointFinder.text = txt;
     renderText(renderer, &pointFinder);*/
+}
+
+void flashVan() {
+    SDL_SetTextureColorMod(van, 255, 150, 150);
+    vanDamageAnimEndTime = SDL_GetTicks64() + 75;
 }
 
 void freeGameScene() {

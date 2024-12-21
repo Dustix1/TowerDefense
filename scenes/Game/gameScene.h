@@ -6,4 +6,6 @@
 
 void renderGame(SDL_Renderer* renderer);
 void initGameScene(SDL_Renderer* renderer, SelectedMap SelectedMap);
+void flashVan();
+
 void freeGameScene();
