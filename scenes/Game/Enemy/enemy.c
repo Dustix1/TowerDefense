@@ -21,7 +21,7 @@ static SDL_Texture* missingTexture;
 
 bool loadedTextures = false;
 
-void loadTextures(SDL_Renderer* renderer) {
+void loadGhostTextures(SDL_Renderer* renderer) {
     spiritTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Spirit.png");
     shadeTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Shade.png");
     goryoTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Goryo.png");

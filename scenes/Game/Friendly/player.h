@@ -3,6 +3,7 @@
 typedef struct {
     float hp;
     int money;
+    int score;
 } Player;
 
 extern Player player;

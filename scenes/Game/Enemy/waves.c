@@ -8,6 +8,7 @@
 #include "../../../interactions/buttons.h"
 #include "../gameScene.h"
 #include "../../End/endScene.h"
+#include "../Friendly/tower.h"
 #include "enemy.h"
 
 static FILE *waveFile;
@@ -98,7 +99,8 @@ void startWave() {
     nextIterTime = SDL_GetTicks64() + waveData[waveDataIndex++];
     waveRunning = true;
     Button* startWaveButton = searchForButton("startWave");
-    startWaveButton->active = false;
+    if (startWaveButton != NULL) startWaveButton->active = false;
+    setTowerUIButtonsState(false);
 }
 
 void endWave() {
@@ -107,6 +109,7 @@ void endWave() {
     loadNextWave();
     Button* startWaveButton = searchForButton("startWave");
     if (startWaveButton != NULL) startWaveButton->active = true;
+    setTowerUIButtonsState(true);
 }
 
 void resetWaves() {

@@ -6,13 +6,14 @@
 #include "../scenes/Game/gameScene.h"
 #include "../scenes/Game/Enemy/enemy.h"
 #include "../scenes/Game/Enemy/waves.h"
+#include "../scenes/Game/Friendly/tower.h"
 #include "../utils/rectStuff.h"
 
 Button** buttons = NULL;
 size_t buttonCount = 0;
 
 void makeButton(Text* text, SDL_Rect rect, SDL_Texture* texture, SDL_Color* hilightColor, char* id, ButtonType type) {
-    Button** tmp = realloc(buttons, (buttonCount +1) * sizeof(Text*));
+    Button** tmp = realloc(buttons, (buttonCount +1) * sizeof(Button*));
     buttons = tmp;
 
     Button* temp = malloc(sizeof(Button));
@@ -33,7 +34,7 @@ void makeButtonsLookInActive() {
     {
         if (buttons[i]->type == RECTBUTTON) {
             if (!buttons[i]->active) SDL_SetTextureColorMod(buttons[i]->texture, 100, 100, 100);
-            else SDL_SetTextureColorMod(buttons[i]->texture, 255, 255, 255);
+            //else SDL_SetTextureColorMod(buttons[i]->texture, 255, 255, 255);
         } else {
             if (!buttons[i]->active) {
                 SDL_Color inactiveColor;
@@ -88,7 +89,10 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
         } else if (strcmp(temp->ID, "backToMenu") == 0) {
             initMenuScene();
             changeScene(MENU);
-        }
+        } else if (strcmp(temp->ID, "waterTower") == 0 || strcmp(temp->ID, "incenseTower") == 0) {
+            setTowerUIButtonsState(false);
+            createTower(temp->ID);
+        } 
     }
 }
 

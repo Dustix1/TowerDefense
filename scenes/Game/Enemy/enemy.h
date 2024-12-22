@@ -31,4 +31,4 @@ void spawnNewEnemy(ENEMYTYPE type);
 void moveEnemiesTowardsCurrPoint();
 void renderEnemies(SDL_Renderer* renderer);
 void reachedPlayerBase(int index);
-void loadTextures(SDL_Renderer* renderer);
+void loadGhostTextures(SDL_Renderer* renderer);

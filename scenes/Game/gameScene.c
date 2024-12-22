@@ -12,6 +12,7 @@
 #include "../../interactions/buttons.h"
 #include "../../interactions/rect.h"
 #include "../../interactions/mouse.h"
+#include "Friendly/tower.h"
 #include "../End/endScene.h"
 #include "Friendly/player.h"
 #include "Map/map.h"
@@ -48,10 +49,12 @@ Text startWaveButtonText;
 void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     font = TTF_OpenFont("../fonts/lazy_dog.ttf", 120);
 
-    loadTextures(renderer);
+    loadGhostTextures(renderer);
+    loadTowers(renderer);
 
     player.hp = 100;
     player.money = 50;
+    player.score = 0;
 
     currentWave = 0;
     loadNextWave();
@@ -125,6 +128,9 @@ void renderGame(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, van, NULL, &vanRect);
     if (SDL_GetTicks64() >= vanDamageAnimEndTime) SDL_SetTextureColorMod(van, 255, 255, 255);
 
+    dragTower();
+    checkForMoney();
+
     // UI RENDER
     
     SDL_RenderCopy(renderer, bottomUIBG, NULL, &bottomUIBGRect);
@@ -132,6 +138,11 @@ void renderGame(SDL_Renderer* renderer) {
     SDL_RenderCopyEx(renderer, woodBorder, NULL, &woodBorderSeparatorRect, 90, &(SDL_Point){0, 0}, SDL_FLIP_NONE);
 
     // TEXT & BUTTON RENDER
+
+    highlightButtons();
+    makeButtonsLookInActive();
+
+    renderUITowerSelection(renderer);
 
     renderText(renderer, &hpLabel);
     sprintf(hpValue.text, "%4.1f", player.hp);
@@ -143,12 +154,13 @@ void renderGame(SDL_Renderer* renderer) {
     sprintf(waveNum.text, "Wave %d", currentWave + 1);
     renderText(renderer, &waveNum);
 
-    highlightButtons();
-    makeButtonsLookInActive();
-
     if (isMouseOnRect(startWaveButtonRect) && searchForButton("startWave")->active) SDL_SetTextureColorMod(startWaveButton, 225, 225, 255);
     SDL_RenderCopy(renderer, startWaveButton, NULL, &startWaveButtonRect);
     SDL_SetTextureColorMod(startWaveButton, 255, 255, 255);
+
+    // TOWER RENDER
+    dragTower();
+    renderInGameTowers(renderer);
 
     if (player.hp <= 0) {
         freeGameScene();

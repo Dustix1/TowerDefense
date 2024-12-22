@@ -12,6 +12,7 @@
 #include "scenes/Menu/menuScene.h"
 #include "scenes/Game/gameScene.h"
 #include "scenes/End/endScene.h"
+#include "scenes/Game/Friendly/tower.h"
 
 int main()
 {
@@ -58,6 +59,9 @@ int main()
 
             if (event.type == SDL_MOUSEBUTTONDOWN) {
                 if (isMouseOnButton()) makeButtonsDoSomething(renderer);
+            }
+            if (event.type == SDL_MOUSEBUTTONUP) {
+                if (draggingTower) stopDragging();
             }
         }
 
