@@ -25,6 +25,7 @@ void renderUITowerSelection(SDL_Renderer* renderer);
 void setTowerUIButtonsState(bool state);
 
 void createTower(char* id);
+void destroyDraggedTower();
 void dragTower();
 void stopDragging();
 void checkForMoney();

@@ -10,7 +10,7 @@ void createMap(SelectedMap selectedMap, SDL_Renderer* renderer) {
     case WILLOW:
         SDL_Point points[13] = {{605, 900}, {605, 500}, {218, 500}, {218, 309}, {1110, 309}, {1110, 70}, {1767, 70}, {1767, 210}, {1310, 210},
                                 {1310, 335}, {1510, 335}, {1510, 750}, {0, 0}};
-        DIRECTION directions[13] = {-1, UP, LEFT, UP, RIGHT, UP, RIGHT, DOWN, LEFT, DOWN, RIGHT, DOWN, -1};
+        DIRECTION directions[13] = {-2, UP, LEFT, UP, RIGHT, UP, RIGHT, DOWN, LEFT, DOWN, RIGHT, DOWN, -1};
 
         buff.points = malloc(13 * sizeof(SDL_Point));
         memcpy(buff.points, points, 13 * sizeof(SDL_Point));

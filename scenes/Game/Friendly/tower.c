@@ -6,6 +6,7 @@
 #include "../../../utils/gameStatus.h"
 #include "../../../interactions/buttons.h"
 #include "../../../interactions/mouse.h"
+#include "../Map/map.h"
 #include "player.h"
 
 bool draggingTower = false;
@@ -79,7 +80,12 @@ void createTower(char* id) {
     draggedTower = temp;
     towerCount++;
     draggingTower = true;
-    player.money -= temp->cost;
+}
+
+void destroyDraggedTower() {
+    free(towers[towerCount - 1]);
+    towers = realloc(towers, (towerCount - 1) * sizeof(Tower*));
+    towerCount--;
 }
 
 void setTowerUIButtonsState(bool state) {
@@ -99,12 +105,62 @@ void dragTower() {
 }
 
 void stopDragging() {
+    SDL_Rect result;
+    bool didIntersect = false;
+    if (SDL_IntersectRect(&draggedTower->rect, &(SDL_Rect){0, gameStatus.windowSizeY - 250, gameStatus.windowSizeX, 250},
+        &result) == SDL_TRUE) didIntersect = true;
+
+    if (!didIntersect) {
+        for (size_t i = 0; i < towerCount; i++)
+        {
+            if (SDL_IntersectRect(&draggedTower->rect, &towers[i]->rect, &result) == SDL_TRUE &&
+                draggedTower != towers[i]) didIntersect = true;
+        }
+    }
+    
+    if (!didIntersect) {
+        int i = 0;
+        while (map.mapPointsWithDirections.directions[i] != -1)
+        {
+            SDL_Point firstPoint = map.mapPointsWithDirections.points[i];
+            SDL_Point secondPoint = map.mapPointsWithDirections.points[i + 1];
+
+            SDL_Rect mapPart;
+            int offset = 25;
+            switch (map.mapPointsWithDirections.directions[i + 1])
+            {
+            case UP:
+                mapPart = createRect(secondPoint.x - offset, secondPoint.y - offset, offset * 2, firstPoint.y - secondPoint.y + offset);
+                break;
+            case DOWN:
+                mapPart = createRect(firstPoint.x - offset, firstPoint.y - offset, offset * 2, secondPoint.y - firstPoint.y + offset);
+                break;
+            case LEFT:
+                mapPart = createRect(secondPoint.x - offset, secondPoint.y - offset, firstPoint.x - secondPoint.x + offset, offset * 2);
+                break;
+            case RIGHT:
+                mapPart = createRect(firstPoint.x - offset, firstPoint.y - offset, secondPoint.x - firstPoint.x + offset, offset * 2);
+                break;
+            }
+            if (SDL_IntersectRect(&draggedTower->rect, &mapPart, &result) == SDL_TRUE) didIntersect = true;
+            i++;
+        }
+    }
+
+    if (didIntersect) {
+        draggingTower = false;
+        draggedTower = NULL;
+        return destroyDraggedTower();
+    }
+    
+    player.money -= draggedTower->cost;
     draggingTower = false;
     draggedTower = NULL;
     setTowerUIButtonsState(true);
 }
 
 void checkForMoney() {
+    if (draggingTower) return;
     Button* waterTowerButton = searchForButton("waterTower");
     Button* incenseTowerButton = searchForButton("incenseTower");
 

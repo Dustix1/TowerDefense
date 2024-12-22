@@ -53,7 +53,7 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     loadTowers(renderer);
 
     player.hp = 100;
-    player.money = 50;
+    player.money = 99999;
     player.score = 0;
 
     currentWave = 0;
