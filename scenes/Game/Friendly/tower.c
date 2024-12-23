@@ -6,6 +6,7 @@
 #include "../../../utils/gameStatus.h"
 #include "../../../interactions/buttons.h"
 #include "../../../interactions/mouse.h"
+#include "../Enemy/waves.h"
 #include "../Map/map.h"
 #include "player.h"
 
@@ -39,10 +40,12 @@ void loadTowers(SDL_Renderer* renderer) {
 
 void renderInGameTowers(SDL_Renderer* renderer) {
     if (towerCount == 0) return;
-
     for (size_t i = 0; i < towerCount; i++)
     {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
+        if (towers[i]->shouldShowRange) SDL_RenderDrawRect(renderer, &towers[i]->range);
         SDL_RenderCopy(renderer, towers[i]->texture, NULL, &towers[i]->rect);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     }
 }
 
@@ -60,7 +63,7 @@ void createTower(char* id) {
     Tower** tmp = realloc(towers, (towerCount + 1) * sizeof(Tower*));
     towers = tmp;
 
-    Tower* temp = malloc(sizeof(Button));
+    Tower* temp = malloc(sizeof(Tower));
 
     int x, y;
     SDL_GetMouseState(&x, &y);
@@ -69,13 +72,18 @@ void createTower(char* id) {
         temp->cost = waterTowerCost;
         temp->damage = 2;
         temp->texture = holyWaterCannonTexture;
+        int range = 325;
+        temp->range = createRect(x - range / 2, y - range / 2, range, range);
     } else if (strcmp(id, "incenseTower") == 0){
         temp->type = INCENSE;
         temp->cost = incenseTowerCost;
         temp->damage = 0.75f;
         temp->texture = incenseTexture;
+        int range = 250;
+        temp->range = createRect(x - range / 2, y - range / 2, range, range);
     }
     temp->rect = createRect(x - towerSize / 2, y - towerSize / 2, towerSize, towerSize);
+    temp->shouldShowRange = true;
 
     towers[towerCount] = temp;
     draggedTower = temp;
@@ -83,9 +91,28 @@ void createTower(char* id) {
     draggingTower = true;
 }
 
-void destroyDraggedTower() {
-    free(towers[towerCount - 1]);
-    towers = realloc(towers, (towerCount - 1) * sizeof(Tower*));
+void destroyTower(Tower* tower) {
+    if (tower == NULL) {
+        free(towers[towerCount - 1]);
+        towers = realloc(towers, (towerCount - 1) * sizeof(Tower*));
+    } else {
+        Tower** buff = malloc((towerCount - 1) * sizeof(Tower*));
+        bool wasSkipped = false;
+        for (size_t i = 0; i < towerCount; i++)
+        {
+            if (towers[i] != tower && !wasSkipped) {
+                buff[i] = towers[i];
+            } else if (towers[i] != tower) {
+                buff[i - 1] = towers[i];
+            } else {
+                wasSkipped = true;
+            }
+        }
+
+        free(tower);
+        free(towers);
+        towers = buff;
+    }
     towerCount--;
 }
 
@@ -139,10 +166,11 @@ void stopDragging() {
     if (didIntersect) {
         draggingTower = false;
         draggedTower = NULL;
-        return destroyDraggedTower();
+        return destroyTower(NULL);
     }
     
     player.money -= draggedTower->cost;
+    draggedTower->shouldShowRange = false;
     draggingTower = false;
     draggedTower = NULL;
     setTowerUIButtonsState(true);
@@ -164,4 +192,33 @@ void checkForMoney() {
     } else {
         if (incenseTowerButton != NULL) incenseTowerButton->active = true;
     }
+}
+
+void makeRangeFollowtower() {
+    for (size_t i = 0; i < towerCount; i++)
+    {
+        towers[i]->range.x = (towers[i]->rect.x + towers[i]->rect.w / 2) - towers[i]->range.w / 2;
+        towers[i]->range.y = (towers[i]->rect.y + towers[i]->rect.h / 2) - towers[i]->range.h / 2;
+    }
+}
+
+void showTowerRange() {
+    for (size_t i = 0; i < towerCount; i++)
+    {
+        if (isMouseOnRect(towers[i]->rect)) towers[i]->shouldShowRange = true;
+        else towers[i]->shouldShowRange = false;
+    }
+    
+}
+
+void sellTower() {
+    if (draggedTower != NULL) return;
+    for (size_t i = 0; i < towerCount; i++)
+    {
+        if (isMouseOnRect(towers[i]->rect)) {
+            addMoney(towers[i]->cost / 2);
+            destroyTower(towers[i]);
+        }
+    }
+    
 }

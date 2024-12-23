@@ -129,8 +129,10 @@ void renderGame(SDL_Renderer* renderer) {
     if (SDL_GetTicks64() >= vanDamageAnimEndTime) SDL_SetTextureColorMod(van, 255, 255, 255);
 
     dragTower();
+    makeRangeFollowtower();
     checkForMoney();
-
+    showTowerRange();
+    
     // UI RENDER
     
     SDL_RenderCopy(renderer, bottomUIBG, NULL, &bottomUIBGRect);
@@ -159,7 +161,6 @@ void renderGame(SDL_Renderer* renderer) {
     SDL_SetTextureColorMod(startWaveButton, 255, 255, 255);
 
     // TOWER RENDER
-    dragTower();
     renderInGameTowers(renderer);
 
     if (player.hp <= 0) {

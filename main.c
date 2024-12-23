@@ -59,7 +59,8 @@ int main()
             }
 
             if (event.type == SDL_MOUSEBUTTONDOWN) {
-                if (isMouseOnButton()) makeButtonsDoSomething(renderer);
+                if (isMouseOnButton() && event.button.button == SDL_BUTTON_LEFT) makeButtonsDoSomething(renderer);
+                if (event.button.button == SDL_BUTTON_RIGHT) sellTower();
             }
             if (event.type == SDL_MOUSEBUTTONUP) {
                 if (draggingTower) stopDragging();

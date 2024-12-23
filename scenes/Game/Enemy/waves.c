@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <stdbool.h>
 
 #include "../../../utils/gameStatus.h"
 #include "../../../interactions/buttons.h"
@@ -19,8 +18,9 @@ static int waveData[200];
 static int waveDataIndex;
 static int waveDataEndIndex;
 
-static bool waveRunning = false;
 static int nextIterTime = 0;
+
+bool waveRunning = false;
 
 void loadNextWave() {
     char filePath[50];
