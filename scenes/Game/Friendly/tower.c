@@ -13,7 +13,7 @@ bool draggingTower = false;
 static Tower* draggedTower;
 
 static Tower** towers;
-static int towerSize = 50;
+static int towerSize = 75;
 static int towerCount = 0;
 
 static int waterTowerCost = 20;

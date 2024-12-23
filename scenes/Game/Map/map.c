@@ -17,7 +17,7 @@ void generatePath(SDL_Renderer* renderer) {
         SDL_Point secondPoint = map.mapPointsWithDirections.points[i + 1];
 
         map.pathRects = realloc(map.pathRects, (i + 1) * sizeof(SDL_Rect));
-        int offset = 45;
+        int offset = 32;
         switch (map.mapPointsWithDirections.directions[i + 1])
         {
         case UP:

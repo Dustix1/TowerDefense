@@ -10,8 +10,7 @@
 ENEMY* enemies;
 unsigned int enemyCount = 0;
 
-static int offsetX = 70;
-static int offsetY = 70;
+static int ghostSize = 100;
 
 static SDL_Texture* spiritTexture;
 static SDL_Texture* shadeTexture;
@@ -37,10 +36,9 @@ void spawnNewEnemy(ENEMYTYPE type) {
     }
     enemyCount++;
 
-    int size = 125;
     ENEMY buff;
     buff.type = type;
-    buff.rect = createFRect((float)(map.mapPointsWithDirections.points[0].x - offsetX), (float)(map.mapPointsWithDirections.points[0].y - offsetY), size, size);
+    buff.rect = createFRect((float)(map.mapPointsWithDirections.points[0].x - ghostSize / 2), (float)(map.mapPointsWithDirections.points[0].y - ghostSize / 2), ghostSize, ghostSize);
     switch (type)
     {
     case SPIRIT:
@@ -98,8 +96,8 @@ void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
     {
         SDL_FRect pointFRect = createFRect(map.mapPointsWithDirections.points[enemies[i].currPointIndex].x,
                                            map.mapPointsWithDirections.points[enemies[i].currPointIndex].y, 1, 1);
-        SDL_FRect enemyHitboxFRect = createFRect(enemies[i].rect.x + offsetX - 5,
-                                                 enemies[i].rect.y + offsetY - 5, 10, 10);
+        SDL_FRect enemyHitboxFRect = createFRect(enemies[i].rect.x + ghostSize / 2 - 5,
+                                                 enemies[i].rect.y + ghostSize / 2 - 5, 10, 10);
         if (SDL_IntersectFRect(&enemyHitboxFRect, &pointFRect, &result) != SDL_TRUE) {
             switch (map.mapPointsWithDirections.directions[enemies[i].currPointIndex])
             {

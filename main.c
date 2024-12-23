@@ -30,7 +30,7 @@ int main()
         SDL_WINDOWPOS_CENTERED,             // Souřadnice y
         gameStatus.windowSizeX,     // Šířka
         gameStatus.windowSizeY,     // Výška
-        SDL_WINDOW_BORDERLESS // Okno se má po vytvoření rovnou zobrazit
+        SDL_WINDOW_BORDERLESS /*| SDL_WINDOW_FULLSCREEN_DESKTOP*/ // Okno se má po vytvoření rovnou zobrazit
     );
 
     // scene renderer
@@ -38,6 +38,7 @@ int main()
         window,
         -1,
         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    //SDL_RenderSetLogicalSize(renderer, gameStatus.windowSizeX, gameStatus.windowSizeY);
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
@@ -64,8 +65,6 @@ int main()
                 if (draggingTower) stopDragging();
             }
         }
-
-        SDL_GetWindowSize(window, &gameStatus.windowSizeX, &gameStatus.windowSizeY);
 
         SDL_RenderClear(renderer);
         if (gameStatus.currentScene == MENU) {
