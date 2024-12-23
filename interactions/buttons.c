@@ -12,13 +12,13 @@
 Button** buttons = NULL;
 size_t buttonCount = 0;
 
-void makeButton(Text* text, SDL_Rect rect, SDL_Texture* texture, SDL_Color* hilightColor, char* id, ButtonType type) {
+void makeButton(Text* text, SDL_Rect rect, SDL_Texture* texture, SDL_Color* highlightColor, char* id, ButtonType type) {
     Button** tmp = realloc(buttons, (buttonCount +1) * sizeof(Button*));
     buttons = tmp;
 
     Button* temp = malloc(sizeof(Button));
     if (text != NULL) temp->text = text;
-    if (hilightColor != NULL) temp->hilightColor = *hilightColor;
+    if (highlightColor != NULL) temp->highlightColor = *highlightColor;
     if (texture != NULL) temp->texture = texture;
     temp->rect = rect;
     temp->ID = id;
@@ -55,7 +55,7 @@ void highlightButtons() {
     for (size_t i = 0; i < buttonCount; i++)
     {
         if (buttons[i]->type == RECTBUTTON) continue;
-        if (isMouseOnRect(buttons[i]->rect)) buttons[i]->text->color = buttons[i]->hilightColor;
+        if (isMouseOnRect(buttons[i]->rect)) buttons[i]->text->color = buttons[i]->highlightColor;
     }
 }
 

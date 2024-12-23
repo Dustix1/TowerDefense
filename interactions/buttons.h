@@ -14,7 +14,7 @@ typedef struct {
     Text* text;
     SDL_Texture* texture;
     SDL_Rect rect;
-    SDL_Color hilightColor;
+    SDL_Color highlightColor;
     ButtonType type;
     char* ID;
     bool active;
@@ -23,7 +23,7 @@ typedef struct {
 
 void highlightButtons();
 void makeButtonsLookInActive();
-void makeButton(Text* text, SDL_Rect rect, SDL_Texture* texture, SDL_Color* hilightColor, char* id, ButtonType type);
+void makeButton(Text* text, SDL_Rect rect, SDL_Texture* texture, SDL_Color* highlightColor, char* id, ButtonType type);
 void freeButtons();
 Button* searchForButton(char* buttonId);
 

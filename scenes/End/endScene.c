@@ -35,8 +35,8 @@ void initEndScene() {
     int w = 350;
     backToMenu.rect = createRect((gameStatus.windowSizeX - w) / 2, 475, w, 100);
     backToMenu.font = font;
-    SDL_Color quitHilightColor = createColor("BBBBBB", 255);
-    makeButton(&backToMenu, backToMenu.rect, NULL, &quitHilightColor, "backToMenu", TEXTBUTTON);
+    SDL_Color quitHighlightColor = createColor("BBBBBB", 255);
+    makeButton(&backToMenu, backToMenu.rect, NULL, &quitHighlightColor, "backToMenu", TEXTBUTTON);
 }
 
 void renderEndScene(SDL_Renderer* renderer) {
