@@ -1,6 +1,6 @@
 #include "endScene.h"
 
-#include "SDL2/SDL_ttf.h"
+#include <SDL2/SDL_ttf.h>
 
 #include "../../utils/text.h"
 #include "../../utils/gameStatus.h"
