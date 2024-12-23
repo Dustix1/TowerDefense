@@ -33,7 +33,6 @@ SDL_Rect woodBorderRectUp;
 SDL_Rect woodBorderSeparatorRect;
 
 SDL_Texture* van;
-SDL_Rect vanRect;
 
 Text hpLabel;
 Text hpValue;
@@ -49,6 +48,7 @@ Text startWaveButtonText;
 void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     font = TTF_OpenFont("../fonts/lazy_dog.ttf", 120);
 
+    loadPathTexture(renderer);
     loadGhostTextures(renderer);
     loadTowers(renderer);
 
@@ -62,8 +62,6 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     createMap(selectedMap, renderer);
 
     van = IMG_LoadTexture(renderer, "../scenes/Game/images/UI/van.png");
-    vanRect = createRect(gameStatus.windowSizeX - 550, gameStatus.windowSizeY - 450, 350, 200);
-
 
     /*pointFinder.color = createColor("FF0000", 255);
     pointFinder.font = font;
@@ -116,7 +114,9 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
 void renderGame(SDL_Renderer* renderer) {
     updateDeltaTime();
     
+    // MAP RENDER
     SDL_RenderCopy(renderer, map.mapTexture, NULL, &map.mapRect);
+    renderPath(renderer);
 
     /*SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
     SDL_RenderDrawLines(renderer, map.mapPointsWithDirections.points, 12);
@@ -125,7 +125,7 @@ void renderGame(SDL_Renderer* renderer) {
     moveEnemiesTowardsCurrPoint(renderer);
     renderEnemies(renderer);
 
-    SDL_RenderCopy(renderer, van, NULL, &vanRect);
+    SDL_RenderCopy(renderer, van, NULL, &map.vanRect);
     if (SDL_GetTicks64() >= vanDamageAnimEndTime) SDL_SetTextureColorMod(van, 255, 255, 255);
 
     dragTower();

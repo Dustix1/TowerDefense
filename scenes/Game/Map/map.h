@@ -14,10 +14,15 @@ struct MapPointsWithDirections{
 
 struct Map{
     SDL_Texture* mapTexture;
+    SDL_Rect* pathRects;
     SDL_Rect mapRect;
+    SDL_Rect vanRect;
     struct MapPointsWithDirections mapPointsWithDirections;
 };
 
 extern struct Map map;
 
+void loadPathTexture(SDL_Renderer* renderer);
 void createMap(SelectedMap selectedMap, SDL_Renderer* renderer);
+void generatePath(SDL_Renderer* renderer);
+void renderPath(SDL_Renderer* renderer);

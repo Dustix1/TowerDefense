@@ -3,13 +3,49 @@
 struct Map map;
 static struct MapPointsWithDirections buff;
 
+static SDL_Texture* pathTexture;
+
+void loadPathTexture(SDL_Renderer* renderer) {
+    pathTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/maps/path.png");
+}
+
+void generatePath(SDL_Renderer* renderer) {
+    int i = 0;
+    while (map.mapPointsWithDirections.directions[i] != -1)
+    {
+        SDL_Point firstPoint = map.mapPointsWithDirections.points[i];
+        SDL_Point secondPoint = map.mapPointsWithDirections.points[i + 1];
+
+        map.pathRects = realloc(map.pathRects, (i + 1) * sizeof(SDL_Rect));
+        int offset = 45;
+        switch (map.mapPointsWithDirections.directions[i + 1])
+        {
+        case UP:
+            map.pathRects[i] = createRect(secondPoint.x - offset, secondPoint.y - offset, offset * 2, firstPoint.y - secondPoint.y + offset * 2);
+            break;
+        case DOWN:
+            map.pathRects[i] = createRect(firstPoint.x - offset, firstPoint.y - offset, offset * 2, secondPoint.y - firstPoint.y + offset * 2);
+            break;
+        case LEFT:
+            map.pathRects[i] = createRect(secondPoint.x - offset, secondPoint.y - offset, firstPoint.x - secondPoint.x + offset * 2, offset * 2);
+            break;
+        case RIGHT:
+            map.pathRects[i] = createRect(firstPoint.x - offset, firstPoint.y - offset, secondPoint.x - firstPoint.x + offset * 2, offset * 2);
+            break;
+        }
+        i++;
+    }
+}
+
 void createMap(SelectedMap selectedMap, SDL_Renderer* renderer) {
     map.mapRect = createRect(0, 0, gameStatus.windowSizeX, gameStatus.windowSizeY - 250);
     switch (selectedMap)
     {
     case WILLOW:
-        SDL_Point points[13] = {{605, 900}, {605, 500}, {218, 500}, {218, 309}, {1110, 309}, {1110, 70}, {1767, 70}, {1767, 210}, {1310, 210},
-                                {1310, 335}, {1510, 335}, {1510, 750}, {0, 0}};
+        map.vanRect = createRect(gameStatus.windowSizeX - 550, gameStatus.windowSizeY - 450, 350, 200);
+
+        SDL_Point points[13] = {{605, 900}, {605, 500}, {218, 500}, {218, 309}, {1050, 309}, {1050, 70}, {1767, 70}, {1767, 300}, {1310, 300},
+                                {1310, 500}, {1510, 500}, {1510, 750}, {0, 0}};
         DIRECTION directions[13] = {-2, UP, LEFT, UP, RIGHT, UP, RIGHT, DOWN, LEFT, DOWN, RIGHT, DOWN, -1};
 
         buff.points = malloc(13 * sizeof(SDL_Point));
@@ -25,5 +61,15 @@ void createMap(SelectedMap selectedMap, SDL_Renderer* renderer) {
     default:
         gameStatus.running = false;
         break;
+    }
+
+    generatePath(renderer);
+}
+
+void renderPath(SDL_Renderer* renderer) {
+    int i = 0;
+    while (map.mapPointsWithDirections.directions[i] != -1) {
+        SDL_RenderCopy(renderer, pathTexture, NULL, &map.pathRects[i]);
+        i++;
     }
 }

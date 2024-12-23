@@ -13,6 +13,7 @@ bool draggingTower = false;
 static Tower* draggedTower;
 
 static Tower** towers;
+static int towerSize = 50;
 static int towerCount = 0;
 
 static int waterTowerCost = 20;
@@ -74,7 +75,7 @@ void createTower(char* id) {
         temp->damage = 0.75f;
         temp->texture = incenseTexture;
     }
-    temp->rect = createRect(x - 50, y - 50, 100, 100);
+    temp->rect = createRect(x - towerSize / 2, y - towerSize / 2, towerSize, towerSize);
 
     towers[towerCount] = temp;
     draggedTower = temp;
@@ -99,8 +100,13 @@ void dragTower() {
     if (draggedTower != NULL) {
         int x, y;
         SDL_GetMouseState(&x, &y);
-        draggedTower->rect.x = x - 50;
-        draggedTower->rect.y = y - 50;
+        if (x + towerSize / 2 > gameStatus.windowSizeX) draggedTower->rect.x = gameStatus.windowSizeX - towerSize;
+        else if (x - towerSize / 2 < 0) draggedTower->rect.x = 0;
+        else draggedTower->rect.x = x - towerSize / 2;
+
+        if (y + towerSize / 2 > gameStatus.windowSizeY) draggedTower->rect.y = gameStatus.windowSizeY - towerSize;
+        else if (y - towerSize / 2 < 0) draggedTower->rect.y = 0;
+        else draggedTower->rect.y = y - towerSize / 2;
     }
 }
 
@@ -109,7 +115,6 @@ void stopDragging() {
     bool didIntersect = false;
     if (SDL_IntersectRect(&draggedTower->rect, &(SDL_Rect){0, gameStatus.windowSizeY - 250, gameStatus.windowSizeX, 250},
         &result) == SDL_TRUE) didIntersect = true;
-
     if (!didIntersect) {
         for (size_t i = 0; i < towerCount; i++)
         {
@@ -117,35 +122,19 @@ void stopDragging() {
                 draggedTower != towers[i]) didIntersect = true;
         }
     }
-    
     if (!didIntersect) {
         int i = 0;
         while (map.mapPointsWithDirections.directions[i] != -1)
         {
-            SDL_Point firstPoint = map.mapPointsWithDirections.points[i];
-            SDL_Point secondPoint = map.mapPointsWithDirections.points[i + 1];
-
-            SDL_Rect mapPart;
-            int offset = 25;
-            switch (map.mapPointsWithDirections.directions[i + 1])
-            {
-            case UP:
-                mapPart = createRect(secondPoint.x - offset, secondPoint.y - offset, offset * 2, firstPoint.y - secondPoint.y + offset);
-                break;
-            case DOWN:
-                mapPart = createRect(firstPoint.x - offset, firstPoint.y - offset, offset * 2, secondPoint.y - firstPoint.y + offset);
-                break;
-            case LEFT:
-                mapPart = createRect(secondPoint.x - offset, secondPoint.y - offset, firstPoint.x - secondPoint.x + offset, offset * 2);
-                break;
-            case RIGHT:
-                mapPart = createRect(firstPoint.x - offset, firstPoint.y - offset, secondPoint.x - firstPoint.x + offset, offset * 2);
-                break;
-            }
-            if (SDL_IntersectRect(&draggedTower->rect, &mapPart, &result) == SDL_TRUE) didIntersect = true;
+            if (didIntersect) break;
+            if (SDL_IntersectRect(&draggedTower->rect, &map.pathRects[i], &result) == SDL_TRUE) didIntersect = true;
             i++;
         }
     }
+    if (!didIntersect) {
+        if (SDL_IntersectRect(&draggedTower->rect, &map.vanRect, &result) == SDL_TRUE) didIntersect = true;
+    }
+    
 
     if (didIntersect) {
         draggingTower = false;
