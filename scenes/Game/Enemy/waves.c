@@ -100,7 +100,6 @@ void startWave() {
     waveRunning = true;
     Button* startWaveButton = searchForButton("startWave");
     if (startWaveButton != NULL) startWaveButton->active = false;
-    setTowerUIButtonsState(false);
 }
 
 void endWave() {
@@ -109,7 +108,6 @@ void endWave() {
     loadNextWave();
     Button* startWaveButton = searchForButton("startWave");
     if (startWaveButton != NULL) startWaveButton->active = true;
-    setTowerUIButtonsState(true);
 }
 
 void resetWaves() {

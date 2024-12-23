@@ -63,7 +63,7 @@ int main()
                 if (event.button.button == SDL_BUTTON_RIGHT) sellTower();
             }
             if (event.type == SDL_MOUSEBUTTONUP) {
-                if (draggingTower) stopDragging();
+                if (draggingTower && event.button.button == SDL_BUTTON_LEFT) stopDragging();
             }
         }
 

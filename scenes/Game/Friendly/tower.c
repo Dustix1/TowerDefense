@@ -43,7 +43,10 @@ void renderInGameTowers(SDL_Renderer* renderer) {
     for (size_t i = 0; i < towerCount; i++)
     {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
-        if (towers[i]->shouldShowRange) SDL_RenderDrawRect(renderer, &towers[i]->range);
+        if (towers[i]->shouldShowRange) {
+            SDL_SetTextureColorMod(towers[i]->texture, 255, 255, 255);
+            SDL_RenderDrawRect(renderer, &towers[i]->range);
+        } else SDL_SetTextureColorMod(towers[i]->texture, 200, 200, 200);
         SDL_RenderCopy(renderer, towers[i]->texture, NULL, &towers[i]->rect);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     }
@@ -51,12 +54,12 @@ void renderInGameTowers(SDL_Renderer* renderer) {
 
 void renderUITowerSelection(SDL_Renderer* renderer) {
     if (isMouseOnRect(holyWaterCannonUIRect) && searchForButton("waterTower")->active) SDL_SetTextureColorMod(holyWaterCannonTexture, 255, 255, 255);
+    else  SDL_SetTextureColorMod(holyWaterCannonTexture, 200, 200, 200);
     SDL_RenderCopy(renderer, holyWaterCannonTexture, NULL, &holyWaterCannonUIRect);
-    SDL_SetTextureColorMod(holyWaterCannonTexture, 200, 200, 200);
 
     if (isMouseOnRect(incenseUIRect) && searchForButton("incenseTower")->active) SDL_SetTextureColorMod(incenseTexture, 255, 255, 255);
+    else SDL_SetTextureColorMod(incenseTexture, 200, 200, 200);
     SDL_RenderCopy(renderer, incenseTexture, NULL, &incenseUIRect);
-    SDL_SetTextureColorMod(incenseTexture, 200, 200, 200);
 }
 
 void createTower(char* id) {
