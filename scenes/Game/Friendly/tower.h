@@ -47,7 +47,7 @@ void makeRangeFollowtower();
 void showTowerRange();
 void sellTower();
 
-void makeTowersDoSomething();
+void makeTowersDoSomething(SDL_Renderer* renderer);
 
 void getTarget();
 void setNextTarget();

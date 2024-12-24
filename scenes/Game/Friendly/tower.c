@@ -21,6 +21,8 @@ static int waterTowerCost = 20;
 static int incenseTowerCost = 25;
 static int crucifixTowerCost = 30;
 
+static int animCrucifixAimTime = 0;
+
 static SDL_Texture* holyWaterCannonTexture;
 static SDL_Rect holyWaterCannonUIRect;
 static SDL_Texture* incenseTexture;
@@ -33,13 +35,13 @@ static SDL_Texture* waterProjectileTexture;
 void loadTowers(SDL_Renderer* renderer) {
     holyWaterCannonTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/towers/cat.png");
     incenseTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/missingTexture.jpg");
-    crucifixTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/maps/path.png");
+    crucifixTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/towers/CrucifixTower.png");
     waterProjectileTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/towers/WaterProjectile.png");
 
     int wh = 200;
 
     holyWaterCannonUIRect = createRect(450, gameStatus.windowSizeY - 215, wh, wh);
-    crucifixUIRect = createRect(holyWaterCannonUIRect.x + wh + 50, holyWaterCannonUIRect.y, wh, wh); 
+    crucifixUIRect = createRect(holyWaterCannonUIRect.x + wh + 50, holyWaterCannonUIRect.y, 150, wh);
     incenseUIRect = createRect(crucifixUIRect.x + wh + 50, crucifixUIRect.y, wh, wh);
 
     makeButton(NULL, holyWaterCannonUIRect, holyWaterCannonTexture, NULL, "waterTower", RECTBUTTON);
@@ -51,6 +53,8 @@ void renderInGameTowers(SDL_Renderer* renderer) {
     if (towerCount == 0) return;
     for (size_t i = 0; i < towerCount; i++)
     {
+        if (draggedTower != NULL) towers[i]->shouldShowRange = true;
+
         switch (towers[i]->type)
         {
         case HOLYWATERCANNON:
@@ -59,6 +63,8 @@ void renderInGameTowers(SDL_Renderer* renderer) {
                 if (towers[i]->shouldShowRange) {
                     SDL_SetTextureColorMod(towers[i]->texture, 255, 255, 255);
                     SDL_RenderDrawRect(renderer, &towers[i]->range);
+                    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                    SDL_RenderDrawRect(renderer, &towers[i]->rect);
                 } else SDL_SetTextureColorMod(towers[i]->texture, 200, 200, 200);
                 SDL_RenderCopy(renderer, towers[i]->texture, NULL, &towers[i]->rect);
                 SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -81,6 +87,8 @@ void renderInGameTowers(SDL_Renderer* renderer) {
             if (towers[i]->shouldShowRange) {
                 SDL_SetTextureColorMod(towers[i]->texture, 255, 255, 255);
                 SDL_RenderDrawRect(renderer, &towers[i]->range);
+                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                    SDL_RenderDrawRect(renderer, &towers[i]->rect);
             } else SDL_SetTextureColorMod(towers[i]->texture, 200, 200, 200);
             SDL_RenderCopy(renderer, towers[i]->texture, NULL, &towers[i]->rect);
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -119,6 +127,7 @@ void createTower(char* id) {
         temp->texture = holyWaterCannonTexture;
         int range = 325;
         temp->range = createRect(x - range / 2, y - range / 2, range, range);
+        temp->rect = createRect(x - towerSize / 2, y - towerSize / 2, towerSize, towerSize);
     } else if (strcmp(id, "incenseTower") == 0) {
         temp->type = INCENSE;
         temp->cost = incenseTowerCost;
@@ -127,6 +136,7 @@ void createTower(char* id) {
         temp->texture = incenseTexture;
         int range = 300;
         temp->range = createRect(x - range / 2, y - range / 2, range, range);
+        temp->rect = createRect(x - towerSize / 2, y - towerSize / 2, towerSize, towerSize);
     }else if (strcmp(id, "crucifixTower") == 0) {
         temp->type = CRUCIFIX;
         temp->cost = crucifixTowerCost;
@@ -135,6 +145,7 @@ void createTower(char* id) {
         temp->texture = crucifixTexture;
         int range = 250;
         temp->range = createRect(x - range / 2, y - range / 2, range, range);
+        temp->rect = createRect(x - towerSize / 2, y - towerSize / 2, towerSize - 15, towerSize + 7);
     }
     temp->currentTarget = NULL;
     temp->enemyTargets = NULL;
@@ -142,8 +153,6 @@ void createTower(char* id) {
     temp->nextTimeOfAttack = 0;
     temp->enemyTargetCount = 0;
     temp->towerTargetCount = 0;
-
-    temp->rect = createRect(x - towerSize / 2, y - towerSize / 2, towerSize, towerSize);
     temp->shouldShowRange = true;
 
     towers[towerCount] = temp;
@@ -316,7 +325,7 @@ void getTarget() {
         case INCENSE:
             for (size_t j = 0; j < towerCount; j++)
             {
-                if (towers[j] == draggedTower) continue;
+                if (towers[j] == draggedTower || towers[j]->type == INCENSE) continue;
                 if (SDL_IntersectRect(&tower->range, &towers[j]->rect, &result) == SDL_TRUE && tower != towers[j]) {
                     tower->towerTargets = realloc(tower->towerTargets, (tower->towerTargetCount + 1) * sizeof(Tower*));
                     tower->towerTargets[tower->towerTargetCount] = towers[j];
@@ -341,20 +350,24 @@ void getTarget() {
     }
 }
 
-void makeTowersDoSomething() {
+void makeTowersDoSomething(SDL_Renderer* renderer) {
     for (size_t i = 0; i < towerCount; i++)
     {
         if (towers[i] == draggedTower) continue;
         switch (towers[i]->type)
         {
         case CRUCIFIX:
-            if (SDL_GetTicks64() >= towers[i]->nextTimeOfAttack) {
-                printf("%d\n", towers[i]->enemyTargetCount);
-                for (size_t j = 0; j < towers[i]->enemyTargetCount; j++)
+            for (size_t j = 0; j < towers[i]->enemyTargetCount; j++)
                 {
-                    damageEnemy(towers[i]->enemyTargets[j], towers[i]->damage);
-                }
-                towers[i]->nextTimeOfAttack = SDL_GetTicks64() + 450;
+                    SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+                    if (SDL_GetTicks64() >= towers[i]->nextTimeOfAttack) {
+                        damageEnemy(towers[i]->enemyTargets[j], towers[i]->damage);
+                        towers[i]->nextTimeOfAttack = SDL_GetTicks64() + 450;
+                        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                    }
+                    SDL_RenderDrawLine(renderer, towers[i]->rect.x + towers[i]->rect.w / 2, towers[i]->rect.y + towers[i]->rect.h / 2,
+                    towers[i]->enemyTargets[j]->rect.x + towers[i]->enemyTargets[j]->rect.w / 2, towers[i]->enemyTargets[j]->rect.y + towers[i]->enemyTargets[j]->rect.h / 2);
+                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             }
             break;
         
@@ -362,7 +375,11 @@ void makeTowersDoSomething() {
             for (size_t j = 0; j < towers[i]->towerTargetCount; j++)
             {
                 towers[i]->towerTargets[j]->damage = towers[i]->towerTargets[j]->baseDamage + 1.25f;
+                SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+                SDL_RenderDrawLine(renderer, towers[i]->rect.x + towers[i]->rect.w / 2, towers[i]->rect.y + towers[i]->rect.h / 2,
+                towers[i]->towerTargets[j]->rect.x + towers[i]->towerTargets[j]->rect.w / 2, towers[i]->towerTargets[j]->rect.y + towers[i]->towerTargets[j]->rect.h / 2);
             }
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             break;
 
         case HOLYWATERCANNON:
