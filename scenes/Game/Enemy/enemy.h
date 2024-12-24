@@ -22,6 +22,7 @@ typedef struct {
     SDL_FRect rect;
     unsigned int currPointIndex;
     float speed;
+    float hp;
 } ENEMY;
 
 extern ENEMY** enemies;
@@ -32,3 +33,6 @@ void moveEnemiesTowardsCurrPoint();
 void renderEnemies(SDL_Renderer* renderer);
 void reachedPlayerBase(int index);
 void loadGhostTextures(SDL_Renderer* renderer);
+void checkForDeath();
+
+void damageEnemy(ENEMY* enemy, float damage);

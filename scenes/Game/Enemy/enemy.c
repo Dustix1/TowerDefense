@@ -43,22 +43,27 @@ void spawnNewEnemy(ENEMYTYPE type) {
     {
     case SPIRIT:
         buff->speed = 125;
+        buff->hp = 5;
         buff->texture = spiritTexture;
         break;
     case SHADE:
         buff->speed = 110;
+        buff->hp = 4;
         buff->texture = shadeTexture;
         break;
     case GORYO:
         buff->speed = 125;
+        buff->hp = 5;
         buff->texture = goryoTexture;
         break;
     case DEOGEN:
         buff->speed = 300;
+        buff->hp = 7;
         buff->texture = deogenTexture;
         break;
     default:
         buff->speed = 350;
+        buff->hp = 100;
         buff->texture = missingTexture;
         break;
     }
@@ -133,4 +138,34 @@ void renderEnemies(SDL_Renderer* renderer) {
         SDL_Rect buff = createRect(enemies[i]->rect.x, enemies[i]->rect.y, enemies[i]->rect.w, enemies[i]->rect.h);
         SDL_RenderCopy(renderer, enemies[i]->texture, NULL, &buff);
     }
+}
+
+void checkForDeath() {
+    for (size_t i = 0; i < enemyCount; i++)
+    {
+        if (enemies[i]->hp <= 0) {
+            ENEMY** buff = malloc((enemyCount - 1) * sizeof(ENEMY*));
+            bool wasSkipped = false;
+            for (size_t j = 0; j < enemyCount; j++)
+            {
+                if (j != i && !wasSkipped) {
+                    buff[j] = enemies[j];
+                } else if (j != i) {
+                    buff[j - 1] = enemies[j];
+                } else {
+                    wasSkipped = true;
+                    free(enemies[j]);
+                    enemies[j] = NULL;
+                }
+            }
+
+            free(enemies);
+            enemies = buff;
+            enemyCount--;
+        }
+    }
+}
+
+void damageEnemy(ENEMY* enemy, float damage) {
+    enemy->hp -= damage;
 }

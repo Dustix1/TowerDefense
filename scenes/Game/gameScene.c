@@ -121,8 +121,10 @@ void renderGame(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);*/
 
     moveEnemiesTowardsCurrPoint(renderer);
+    checkForDeath();
     getTarget();
     renderEnemies(renderer);
+    makeTowersDoSomething();
 
     SDL_RenderCopy(renderer, van, NULL, &map.vanRect);
     if (SDL_GetTicks64() >= vanDamageAnimEndTime) SDL_SetTextureColorMod(van, 255, 255, 255);

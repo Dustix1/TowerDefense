@@ -89,7 +89,7 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
         } else if (strcmp(temp->ID, "backToMenu") == 0) {
             initMenuScene();
             changeScene(MENU);
-        } else if (strcmp(temp->ID, "waterTower") == 0 || strcmp(temp->ID, "incenseTower") == 0) {
+        } else if (strcmp(temp->ID, "waterTower") == 0 || strcmp(temp->ID, "incenseTower") == 0 || strcmp(temp->ID, "crucifixTower") == 0) {
             setTowerUIButtonsState(false);
             createTower(temp->ID);
         } 

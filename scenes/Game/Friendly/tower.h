@@ -9,19 +9,28 @@ extern bool draggingTower;
 
 typedef enum {
     HOLYWATERCANNON,
-    INCENSE
+    INCENSE,
+    CRUCIFIX
 } TowerType;
 
-typedef struct {
+typedef struct Tower Tower;
+
+struct Tower {
     TowerType type;
     SDL_Rect rect;
     SDL_Rect range;
     SDL_Texture* texture;
     ENEMY** currentTarget;
-    float damage;
+    ENEMY** enemyTargets;
+    Tower** towerTargets;
+    int enemyTargetCount;
+    int towerTargetCount;
+    int nextTimeOfAttack;
     int cost;
+    float baseDamage;
+    float damage;
     bool shouldShowRange;
-} Tower;
+};
 
 void loadTowers(SDL_Renderer* renderer);
 void renderInGameTowers(SDL_Renderer* renderer);
@@ -37,6 +46,8 @@ void checkForMoney();
 void makeRangeFollowtower();
 void showTowerRange();
 void sellTower();
+
+void makeTowersDoSomething();
 
 void getTarget();
 void setNextTarget();
