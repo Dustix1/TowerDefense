@@ -225,3 +225,16 @@ void sellTower() {
     }
     
 }
+
+
+void freeTowers() {
+    draggingTower = false;
+    for (size_t i = 0; i < towerCount; i++)
+    {
+        free(towers[i]);
+    }
+    towerCount = 0;
+    free(towers);
+    towers = NULL;
+    draggedTower = NULL;
+}

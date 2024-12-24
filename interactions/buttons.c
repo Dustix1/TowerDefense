@@ -68,7 +68,7 @@ bool isMouseOnButton() {
 }
 
 void makeButtonsDoSomething(SDL_Renderer* renderer) {
-    Button* temp = malloc(sizeof(Button));
+    Button* temp;
     for (size_t i = 0; i < buttonCount; i++)
     {
         if (isMouseOnRect(buttons[i]->rect)) temp = buttons[i];

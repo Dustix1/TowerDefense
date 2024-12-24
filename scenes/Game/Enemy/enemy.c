@@ -82,9 +82,9 @@ void reachedPlayerBase(int index) {
     }
 
     free(enemies);
-    enemies = malloc((--enemyCount) * sizeof(ENEMY));
+    //enemies = malloc((--enemyCount) * sizeof(ENEMY));
     enemies = buff;
-
+    enemyCount--;
     damagePlayer(7.5f);
 }
 

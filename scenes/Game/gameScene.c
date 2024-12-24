@@ -203,6 +203,7 @@ void freeGameScene() {
     free(moneyValue.text);
     free(waveNum.text);
     freeButtons();
+    freeTowers();
     SDL_DestroyTexture(map.mapTexture);
     TTF_CloseFont(font);
 }

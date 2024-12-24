@@ -34,3 +34,5 @@ void checkForMoney();
 void makeRangeFollowtower();
 void showTowerRange();
 void sellTower();
+
+void freeTowers();

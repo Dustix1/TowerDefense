@@ -80,8 +80,6 @@ int main()
     }
 
     // Uvolnění prostředků
-    if (gameStatus.currentScene == MENU) freeMenuScene();
-    freeButtons();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
