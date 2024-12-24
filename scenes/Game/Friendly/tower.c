@@ -42,13 +42,25 @@ void renderInGameTowers(SDL_Renderer* renderer) {
     if (towerCount == 0) return;
     for (size_t i = 0; i < towerCount; i++)
     {
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
-        if (towers[i]->shouldShowRange) {
-            SDL_SetTextureColorMod(towers[i]->texture, 255, 255, 255);
-            SDL_RenderDrawRect(renderer, &towers[i]->range);
-        } else SDL_SetTextureColorMod(towers[i]->texture, 200, 200, 200);
-        SDL_RenderCopy(renderer, towers[i]->texture, NULL, &towers[i]->rect);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        if (draggedTower == towers[i] || towers[i]->currentTarget == NULL) {
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
+            if (towers[i]->shouldShowRange) {
+                SDL_SetTextureColorMod(towers[i]->texture, 255, 255, 255);
+                SDL_RenderDrawRect(renderer, &towers[i]->range);
+            } else SDL_SetTextureColorMod(towers[i]->texture, 200, 200, 200);
+            SDL_RenderCopy(renderer, towers[i]->texture, NULL, &towers[i]->rect);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        } else {
+            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 100);
+            if (towers[i]->shouldShowRange) {
+                SDL_SetTextureColorMod(towers[i]->texture, 255, 255, 255);
+                SDL_RenderDrawRect(renderer, &towers[i]->range);
+            } else SDL_SetTextureColorMod(towers[i]->texture, 200, 200, 200);
+            SDL_FRect targetFRect = (*towers[i]->currentTarget)->rect;
+            SDL_Rect targetRect = createRect(round(targetFRect.x), round(targetFRect.y), round(targetFRect.w), round(targetFRect.h));
+            SDL_RenderCopyEx(renderer, towers[i]->texture, NULL, &towers[i]->rect, calculateRotationAngle(towers[i]->rect, targetRect), NULL, SDL_FLIP_NONE);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        }
     }
 }
 
@@ -77,7 +89,7 @@ void createTower(char* id) {
         temp->texture = holyWaterCannonTexture;
         int range = 325;
         temp->range = createRect(x - range / 2, y - range / 2, range, range);
-    } else if (strcmp(id, "incenseTower") == 0){
+    } else if (strcmp(id, "incenseTower") == 0) {
         temp->type = INCENSE;
         temp->cost = incenseTowerCost;
         temp->damage = 0.75f;
@@ -85,6 +97,7 @@ void createTower(char* id) {
         int range = 250;
         temp->range = createRect(x - range / 2, y - range / 2, range, range);
     }
+    temp->currentTarget = NULL;
     temp->rect = createRect(x - towerSize / 2, y - towerSize / 2, towerSize, towerSize);
     temp->shouldShowRange = true;
 
@@ -226,6 +239,23 @@ void sellTower() {
     
 }
 
+void getTarget() {
+    for (size_t i = 0; i < towerCount; i++)
+    {
+        Tower* tower = towers[i];
+        tower->currentTarget = NULL;
+        for (size_t j = 0; j < enemyCount; j++)
+        {
+            if (tower->currentTarget != NULL) break;
+            SDL_Rect result;
+            SDL_FRect enemyFRect = enemies[j]->rect;
+            SDL_Rect enemyRect = createRect(round(enemyFRect.x), round(enemyFRect.y), round(enemyFRect.w), round(enemyFRect.h));
+            if(SDL_IntersectRect(&tower->range, &enemyRect, &result) == SDL_TRUE) {
+                tower->currentTarget = &enemies[j];
+            }
+        }
+    }
+}
 
 void freeTowers() {
     draggingTower = false;

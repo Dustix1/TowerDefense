@@ -2,8 +2,6 @@
 
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
-#include <math.h>
-#define M_PI 3.14159265358979323846
 
 #include "../../utils/rectStuff.h"
 #include "../../utils/text.h"
@@ -123,6 +121,7 @@ void renderGame(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);*/
 
     moveEnemiesTowardsCurrPoint(renderer);
+    getTarget();
     renderEnemies(renderer);
 
     SDL_RenderCopy(renderer, van, NULL, &map.vanRect);

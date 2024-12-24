@@ -24,7 +24,7 @@ typedef struct {
     float speed;
 } ENEMY;
 
-extern ENEMY* enemies;
+extern ENEMY** enemies;
 extern unsigned int enemyCount;
 
 void spawnNewEnemy(ENEMYTYPE type);

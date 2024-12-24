@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+#include "../Enemy/enemy.h"
+
 extern bool draggingTower;
 
 typedef enum {
@@ -15,6 +17,7 @@ typedef struct {
     SDL_Rect rect;
     SDL_Rect range;
     SDL_Texture* texture;
+    ENEMY** currentTarget;
     float damage;
     int cost;
     bool shouldShowRange;
@@ -34,5 +37,8 @@ void checkForMoney();
 void makeRangeFollowtower();
 void showTowerRange();
 void sellTower();
+
+void getTarget();
+void setNextTarget();
 
 void freeTowers();

@@ -1,4 +1,6 @@
 #include "rectStuff.h"
+#include <math.h>
+#define M_PI 3.14159265358979323846
 
 SDL_Rect createRect(int posX, int posY, int width, int height) {
     SDL_Rect buff = {
@@ -34,4 +36,8 @@ SDL_Color createColor(char* hexColor, int alpha) {
         .a = alpha
     };
     return buff;
+}
+
+double calculateRotationAngle(SDL_Rect r1, SDL_Rect r2) {
+    return atan2((r2.y + r2.h / 2.0) - (r1.y + r1.h / 2.0), (r2.x + r2.w / 2.0) - (r1.x + r1.w / 2.0)) * (180.0 / M_PI) + 90;
 }
