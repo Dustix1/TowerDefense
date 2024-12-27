@@ -33,14 +33,14 @@ static SDL_Rect crucifixUIRect;
 static SDL_Texture* waterProjectileTexture;
 
 void loadTowers(SDL_Renderer* renderer) {
-    holyWaterCannonTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/towers/cat.png");
-    incenseTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/missingTexture.jpg");
+    holyWaterCannonTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/towers/HolyWaterCannon.png");
+    incenseTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/towers/IncenseTower.png");
     crucifixTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/towers/CrucifixTower.png");
     waterProjectileTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/towers/WaterProjectile.png");
 
     int wh = 200;
 
-    holyWaterCannonUIRect = createRect(450, gameStatus.windowSizeY - 215, wh, wh);
+    holyWaterCannonUIRect = createRect(450, gameStatus.windowSizeY - 215, 150, wh);
     crucifixUIRect = createRect(holyWaterCannonUIRect.x + wh + 50, holyWaterCannonUIRect.y, 150, wh);
     incenseUIRect = createRect(crucifixUIRect.x + wh + 50, crucifixUIRect.y, wh, wh);
 
@@ -127,7 +127,7 @@ void createTower(char* id) {
         temp->texture = holyWaterCannonTexture;
         int range = 325;
         temp->range = createRect(x - range / 2, y - range / 2, range, range);
-        temp->rect = createRect(x - towerSize / 2, y - towerSize / 2, towerSize, towerSize);
+        temp->rect = createRect(x - towerSize / 2, y - towerSize / 2, towerSize - 10, towerSize + 7);
     } else if (strcmp(id, "incenseTower") == 0) {
         temp->type = INCENSE;
         temp->cost = incenseTowerCost;

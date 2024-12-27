@@ -124,7 +124,6 @@ void renderGame(SDL_Renderer* renderer) {
     checkForDeath();
     getTarget();
     renderEnemies(renderer);
-    makeTowersDoSomething(renderer);
 
     SDL_RenderCopy(renderer, van, NULL, &map.vanRect);
     if (SDL_GetTicks64() >= vanDamageAnimEndTime) SDL_SetTextureColorMod(van, 255, 255, 255);
@@ -163,6 +162,7 @@ void renderGame(SDL_Renderer* renderer) {
 
     // TOWER RENDER
     renderInGameTowers(renderer);
+    makeTowersDoSomething(renderer);
 
     if (player.hp <= 0) {
         freeGameScene();
