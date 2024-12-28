@@ -36,3 +36,5 @@ void loadGhostTextures(SDL_Renderer* renderer);
 void checkForDeath();
 
 void damageEnemy(ENEMY* enemy, float damage);
+
+void freeEnemies();

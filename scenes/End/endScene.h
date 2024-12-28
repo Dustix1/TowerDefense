@@ -4,3 +4,5 @@
 
 void initEndScene();
 void renderEndScene(SDL_Renderer* renderer);
+
+void freeEndScene();

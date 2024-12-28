@@ -39,22 +39,22 @@ void spawnNewEnemy(ENEMYTYPE type) {
     {
     case SPIRIT:
         buff->speed = 125;
-        buff->hp = 5;
+        buff->hp = 7;
         buff->texture = spiritTexture;
         break;
     case SHADE:
         buff->speed = 110;
-        buff->hp = 4;
+        buff->hp = 5;
         buff->texture = shadeTexture;
         break;
     case GORYO:
         buff->speed = 125;
-        buff->hp = 5;
+        buff->hp = 6;
         buff->texture = goryoTexture;
         break;
     case DEOGEN:
         buff->speed = 300;
-        buff->hp = 7;
+        buff->hp = 10;
         buff->texture = deogenTexture;
         break;
     default:
@@ -134,6 +134,22 @@ void checkForDeath() {
         if (enemies[i] == NULL) continue;
 
         if (enemies[i]->hp <= 0) {
+            switch (enemies[i]->type)
+            {
+            case SHADE:
+                player.score += 50;
+                addMoney(1);
+                break;
+            case SPIRIT:
+                player.score += 75;
+                addMoney(2);
+                break;
+            case GORYO:
+            case DEOGEN:
+                player.score += 115;
+                addMoney(3);
+                break;
+            }
             free(enemies[i]);
             enemies[i] = NULL;
         }
@@ -142,4 +158,16 @@ void checkForDeath() {
 
 void damageEnemy(ENEMY* enemy, float damage) {
     enemy->hp -= damage;
+}
+
+void freeEnemies() {
+    for (size_t i = 0; i < enemyCount; i++)
+    {
+        if (enemies[i] == NULL) continue;
+        free(enemies[i]);
+        enemies[i] = NULL;
+    }
+    free(enemies);
+    enemies = NULL;
+    enemyCount = 0;
 }

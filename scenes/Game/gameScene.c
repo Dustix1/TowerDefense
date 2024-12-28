@@ -51,7 +51,7 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
     loadTowers(renderer);
 
     player.hp = 100;
-    player.money = 99999;
+    player.money = 50;
     player.score = 0;
 
     currentWave = 0;
@@ -171,7 +171,6 @@ void renderGame(SDL_Renderer* renderer) {
 
     if (player.hp <= 0) {
         freeGameScene();
-        resetWaves();
         initEndScene();
         return changeScene(LOSE);
     }
@@ -210,6 +209,8 @@ void freeGameScene() {
     free(waveNum.text);
     freeButtons();
     freeTowers();
+    freeEnemies();
+    resetWaves();
     SDL_DestroyTexture(map.mapTexture);
     TTF_CloseFont(font);
 }

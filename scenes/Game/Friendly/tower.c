@@ -103,16 +103,16 @@ void renderInGameTowers(SDL_Renderer* renderer) {
 
 void renderUITowerSelection(SDL_Renderer* renderer) {
     if (isMouseOnRect(holyWaterCannonUIRect) && searchForButton("waterTower")->active) SDL_SetTextureColorMod(holyWaterCannonTexture, 255, 255, 255);
-    else  SDL_SetTextureColorMod(holyWaterCannonTexture, 200, 200, 200);
     SDL_RenderCopy(renderer, holyWaterCannonTexture, NULL, &holyWaterCannonUIRect);
+    SDL_SetTextureColorMod(holyWaterCannonTexture, 200, 200, 200);
 
     if (isMouseOnRect(crucifixUIRect) && searchForButton("crucifixTower")->active) SDL_SetTextureColorMod(crucifixTexture, 255, 255, 255);
-    else SDL_SetTextureColorMod(crucifixTexture, 200, 200, 200);
     SDL_RenderCopy(renderer, crucifixTexture, NULL, &crucifixUIRect);
+    SDL_SetTextureColorMod(crucifixTexture, 200, 200, 200);
 
     if (isMouseOnRect(incenseUIRect) && searchForButton("incenseTower")->active) SDL_SetTextureColorMod(incenseTexture, 255, 255, 255);
-    else SDL_SetTextureColorMod(incenseTexture, 200, 200, 200);
     SDL_RenderCopy(renderer, incenseTexture, NULL, &incenseUIRect);
+    SDL_SetTextureColorMod(incenseTexture, 200, 200, 200);
 }
 
 void renderProjectiles(SDL_Renderer* renderer) {
@@ -137,8 +137,8 @@ void createTower(char* id) {
     if (strcmp(id, "waterTower") == 0) {
         temp->type = HOLYWATERCANNON;
         temp->cost = waterTowerCost;
-        temp->baseDamage = 2;
-        temp->damage = 2;
+        temp->baseDamage = 1;
+        temp->damage = temp->baseDamage;
         temp->texture = holyWaterCannonTexture;
         int range = 325;
         temp->range = createRect(x - range / 2, y - range / 2, range, range);
@@ -147,7 +147,7 @@ void createTower(char* id) {
         temp->type = INCENSE;
         temp->cost = incenseTowerCost;
         temp->baseDamage = 0;
-        temp->damage = 0;
+        temp->damage = temp->baseDamage;
         temp->texture = incenseTexture;
         int range = 300;
         temp->range = createRect(x - range / 2, y - range / 2, range, range);
@@ -155,8 +155,8 @@ void createTower(char* id) {
     }else if (strcmp(id, "crucifixTower") == 0) {
         temp->type = CRUCIFIX;
         temp->cost = crucifixTowerCost;
-        temp->baseDamage = 0.75f;
-        temp->damage = 0.75f;
+        temp->baseDamage = 0.5f;
+        temp->damage = temp->baseDamage;
         temp->texture = crucifixTexture;
         int range = 250;
         temp->range = createRect(x - range / 2, y - range / 2, range, range);
@@ -197,6 +197,8 @@ void setTowerUIButtonsState(bool state) {
     if (waterTowerButton != NULL) waterTowerButton->active = state;
     Button* incenseTowerButton = searchForButton("incenseTower");
     if (incenseTowerButton != NULL) incenseTowerButton->active = state;
+    Button* crucifixTowerButton = searchForButton("crucifixTower");
+    if (crucifixTowerButton != NULL) crucifixTowerButton->active = state;
 }
 
 void dragTower() {
@@ -257,6 +259,7 @@ void checkForMoney() {
     if (draggingTower) return;
     Button* waterTowerButton = searchForButton("waterTower");
     Button* incenseTowerButton = searchForButton("incenseTower");
+    Button* crucifixTowerButton = searchForButton("crucifixTower");
 
     if (player.money < waterTowerCost) {
         if (waterTowerButton != NULL) waterTowerButton->active = false;
@@ -268,6 +271,12 @@ void checkForMoney() {
         if (incenseTowerButton != NULL) incenseTowerButton->active = false;
     } else {
         if (incenseTowerButton != NULL) incenseTowerButton->active = true;
+    }
+
+    if (player.money < crucifixTowerCost) {
+        if (crucifixTowerButton != NULL) crucifixTowerButton->active = false;
+    } else {
+        if (crucifixTowerButton != NULL) crucifixTowerButton->active = true;
     }
 }
 
@@ -389,7 +398,7 @@ void makeTowersDoSomething(SDL_Renderer* renderer) {
         case INCENSE:
             for (size_t j = 0; j < towers[i]->towerTargetCount; j++)
             {
-                towers[i]->towerTargets[j]->damage = towers[i]->towerTargets[j]->baseDamage + 1.25f;
+                towers[i]->towerTargets[j]->damage = towers[i]->towerTargets[j]->baseDamage * 1.5f;
                 SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
                 SDL_RenderDrawLine(renderer, towers[i]->rect.x + towers[i]->rect.w / 2, towers[i]->rect.y + towers[i]->rect.h / 2,
                 towers[i]->towerTargets[j]->rect.x + towers[i]->towerTargets[j]->rect.w / 2, towers[i]->towerTargets[j]->rect.y + towers[i]->towerTargets[j]->rect.h / 2);
@@ -416,7 +425,7 @@ void makeTowersDoSomething(SDL_Renderer* renderer) {
                     projectiles[projectileCount] = buff;
                     projectileCount++;
 
-                    towers[i]->nextTimeOfAttack = SDL_GetTicks64() + 500;
+                    towers[i]->nextTimeOfAttack = SDL_GetTicks64() + 250;
                 }
             break;
         default:

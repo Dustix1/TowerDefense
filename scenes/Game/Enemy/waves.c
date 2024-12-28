@@ -37,10 +37,9 @@ void loadNextWave() {
 
     waveFile = fopen(filePath, "r");
     if (waveFile == NULL) {
-        resetWaves();
         freeGameScene();
-        changeScene(WIN);
-        return initEndScene();
+        initEndScene();
+        return changeScene(WIN);
     }
 
     fgets(wave, 1000, waveFile);
