@@ -34,3 +34,5 @@ void changeScene(CurrentSceneEnum scene);
 void initGame();
 
 void updateDeltaTime();
+
+void freeCurrentScene();

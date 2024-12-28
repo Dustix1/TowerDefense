@@ -123,9 +123,13 @@ void renderGame(SDL_Renderer* renderer) {
     moveProjectiles();
 
     moveEnemiesTowardsCurrPoint(renderer);
+    checkForProjectileCollision();
+    makeTowersDoSomething(renderer);
     checkForDeath();
     getTarget();
     renderEnemies(renderer);
+
+    renderProjectiles(renderer);
 
     SDL_RenderCopy(renderer, van, NULL, &map.vanRect);
     if (SDL_GetTicks64() >= vanDamageAnimEndTime) SDL_SetTextureColorMod(van, 255, 255, 255);
@@ -134,9 +138,6 @@ void renderGame(SDL_Renderer* renderer) {
     makeRangeFollowtower();
     checkForMoney();
     showTowerRange();
-
-    renderProjectiles(renderer);
-    checkForProjectileCollision();
     
     // UI RENDER
     
@@ -165,9 +166,8 @@ void renderGame(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, startWaveButton, NULL, &startWaveButtonRect);
     SDL_SetTextureColorMod(startWaveButton, 255, 255, 255);
 
-    // TOWER & PROJECTILES
+    // TOWER RENDER
     renderInGameTowers(renderer);
-    makeTowersDoSomething(renderer);
 
     if (player.hp <= 0) {
         freeGameScene();
@@ -210,7 +210,8 @@ void freeGameScene() {
     freeButtons();
     freeTowers();
     freeEnemies();
-    if (player.money != 0) player.score *= (player.money / 4) * (currentWave + 1);
+    player.score += player.money;
+    player.score *= currentWave + 1;
     resetWaves();
     SDL_DestroyTexture(map.mapTexture);
     TTF_CloseFont(font);

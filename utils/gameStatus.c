@@ -3,6 +3,10 @@
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL.h>
 
+#include "../scenes/Game/gameScene.h"
+#include "../scenes/End/endScene.h"
+#include "../scenes/Menu/menuScene.h"
+
 struct GameStatusStruct gameStatus;
 
 static Uint64 last;
@@ -26,4 +30,20 @@ void updateDeltaTime() {
 
     // Uložení poslední hodnoty čítače
     last = now;
+}
+
+void freeCurrentScene() {
+    switch (gameStatus.currentScene)
+    {
+    case GAME:
+        freeGameScene();
+        break;
+    case MENU:
+        freeMenuScene();
+        break;
+    case WIN:
+    case LOSE:
+        freeEndScene();
+        break;
+    }
 }

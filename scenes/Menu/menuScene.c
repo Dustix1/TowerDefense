@@ -125,7 +125,8 @@ void renderMenu(SDL_Renderer* renderer)
 
 void writeSymbol(int sym) {
     alreadyGotName = true;
-    nicknameValue.text[nickLength] = sym;
+    if (sym != ' ') nicknameValue.text[nickLength] = sym;
+    else nicknameValue.text[nickLength] = '-';
     nickLength++;
 }
 

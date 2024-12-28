@@ -70,7 +70,7 @@ int main()
 
             if (event.type = SDL_KEYDOWN) {
                 if (SDL_GetTicks64() >= nextKeyPressTime) {
-                    if ((event.key.keysym.sym >= SDLK_a && event.key.keysym.sym <= SDLK_z || event.key.keysym.sym == SDLK_UNDERSCORE)
+                    if ((event.key.keysym.sym >= SDLK_a && event.key.keysym.sym <= SDLK_z || event.key.keysym.sym == SDLK_SPACE)
                         && !searchForButton("nickname")->active && nickLength < 15 && !event.key.repeat) {
                         writeSymbol(event.key.keysym.sym);
                     } else if (event.key.keysym.sym == SDLK_RETURN && !searchForButton("nickname")->active && nickLength >= 5) {
@@ -80,7 +80,7 @@ int main()
                     } else if (event.key.keysym.sym == SDLK_BACKSPACE && !searchForButton("nickname")->active && nickLength != 0) {
                         delSymbol();
                     }
-                    nextKeyPressTime = SDL_GetTicks64() + 135;
+                    nextKeyPressTime = SDL_GetTicks64() + 140;
                 }
             }
         }

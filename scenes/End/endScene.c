@@ -7,6 +7,7 @@
 #include "../../utils/rectStuff.h"
 #include "../../interactions/buttons.h"
 #include "../Game/Friendly/player.h"
+#include "../../save/save.h"
 
 static TTF_Font* font;
 
@@ -19,6 +20,8 @@ Text playerNick;
 
 void initEndScene() {
     font = TTF_OpenFont("../fonts/lazy_dog.ttf", 120);
+
+    saveData();
 
     if (gameStatus.currentScene == WIN) {
         endMessage.color = createColor("FDD813", 255);
@@ -62,7 +65,7 @@ void renderEndScene(SDL_Renderer* renderer) {
     backToMenu.color = backToMenuColor;
 
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 200);
-    SDL_RenderFillRect(renderer, &(SDL_Rect){gameStatus.windowSizeX / 2 - 5, gameStatus.windowSizeY / 2 - 75, 10, 125});
+    SDL_RenderFillRect(renderer, &(SDL_Rect){gameStatus.windowSizeX / 2 - 5, gameStatus.windowSizeY / 2 - 70, 10, 125});
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
     highlightButtons();

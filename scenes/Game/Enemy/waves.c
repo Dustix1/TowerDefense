@@ -38,8 +38,8 @@ void loadNextWave() {
     waveFile = fopen(filePath, "r");
     if (waveFile == NULL) {
         freeGameScene();
-        initEndScene();
-        return changeScene(WIN);
+        changeScene(WIN);
+        return initEndScene();
     }
 
     fgets(wave, 1000, waveFile);

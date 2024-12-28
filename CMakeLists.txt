@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 add_compile_options(-lm -fsanitize=address)
 add_link_options(-lm -fsanitize=address)
 
-file(GLOB SOURCES "*.c" "utils/*.c" "interactions/*.c" "scenes/Menu/*.c" "scenes/Game/*.c" "scenes/Game/Friendly/*.c" "scenes/Game/Enemy/*.c" "scenes/Game/Map/*.c" "scenes/End/*.c")
+file(GLOB SOURCES "*.c" "utils/*.c" "interactions/*.c" "scenes/Menu/*.c" "scenes/Game/*.c" "scenes/Game/Friendly/*.c" "scenes/Game/Enemy/*.c" "scenes/Game/Map/*.c" "scenes/End/*.c" "save/*.c")
 add_executable(sdlgame ${SOURCES})
 
 find_package(SDL2 REQUIRED)
