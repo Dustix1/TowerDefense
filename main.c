@@ -13,6 +13,7 @@
 #include "scenes/Game/gameScene.h"
 #include "scenes/End/endScene.h"
 #include "scenes/Game/Friendly/tower.h"
+#include "scenes/Game/Friendly/player.h"
 
 int main()
 {
@@ -47,6 +48,7 @@ int main()
     initGame();
     initMenuScene();
 
+    int nextKeyPressTime = 0;
     while (gameStatus.running)
     {
         // Dokud jsou k dispozici nějaké události, ukládej je do proměnné `event`
@@ -65,21 +67,42 @@ int main()
             if (event.type == SDL_MOUSEBUTTONUP) {
                 if (draggingTower && event.button.button == SDL_BUTTON_LEFT) stopDragging();
             }
+
+            if (event.type = SDL_KEYDOWN) {
+                if (SDL_GetTicks64() >= nextKeyPressTime) {
+                    if ((event.key.keysym.sym >= SDLK_a && event.key.keysym.sym <= SDLK_z || event.key.keysym.sym == SDLK_UNDERSCORE)
+                        && !searchForButton("nickname")->active && nickLength < 15 && !event.key.repeat) {
+                        writeSymbol(event.key.keysym.sym);
+                    } else if (event.key.keysym.sym == SDLK_RETURN && !searchForButton("nickname")->active && nickLength >= 5) {
+                        saveNickname();
+                        nicknameValue.color = nicknameValue.color = createColor("DDDDFF", 100);
+                        searchForButton("nickname")->active = true;
+                    } else if (event.key.keysym.sym == SDLK_BACKSPACE && !searchForButton("nickname")->active && nickLength != 0) {
+                        delSymbol();
+                    }
+                    nextKeyPressTime = SDL_GetTicks64() + 135;
+                }
+            }
         }
+
 
         SDL_RenderClear(renderer);
         if (gameStatus.currentScene == MENU) {
             renderMenu(renderer);
         } else if (gameStatus.currentScene == GAME) {
             renderGame(renderer);
-        } else {
+        } else if (gameStatus.currentScene == WIN || gameStatus.currentScene == LOSE){
             renderEndScene(renderer);
         }
         SDL_RenderPresent(renderer);
         
     }
 
-    // Uvolnění prostředků
+    free(nicknameValue.text);
+    nicknameValue.text = NULL;
+    free(player.nick);
+    player.nick = NULL;
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

@@ -76,12 +76,19 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
     
     if (temp->active) {
         if (strcmp(temp->ID, "QuitBtn") == 0) {
+            changeScene(NONE);
             gameStatus.running = false;
+            freeMenuScene();
         } else if (strcmp(temp->ID, "MenuStartBtn") == 0) {
             freeMenuScene();
             freeButtons();
             initGameScene(renderer, WILLOW); // MAKE SELECTION POSSIBLE LATER
             changeScene(GAME);
+        } else if (strcmp(temp->ID, "nickname") == 0) {
+            nicknameValue.color = nicknameValue.color = createColor("DDDDFF", 255);
+            sprintf(nicknameValue.text, "\0");
+            nickLength = 0;
+            temp->active = false;
         } else if (strcmp(temp->ID, "spwnRndEne") == 0) {
             spawnNewEnemy(rand() % 5);
         } else if (strcmp(temp->ID, "startWave") == 0) {
@@ -92,7 +99,7 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
         } else if (strcmp(temp->ID, "waterTower") == 0 || strcmp(temp->ID, "incenseTower") == 0 || strcmp(temp->ID, "crucifixTower") == 0) {
             setTowerUIButtonsState(false);
             createTower(temp->ID);
-        } 
+        }
     }
 }
 

@@ -15,6 +15,7 @@ SDL_Color backToMenuColor;
 
 Text endMessage;
 Text scoreText;
+Text playerNick;
 
 void initEndScene() {
     font = TTF_OpenFont("../fonts/lazy_dog.ttf", 120);
@@ -22,20 +23,25 @@ void initEndScene() {
     if (gameStatus.currentScene == WIN) {
         endMessage.color = createColor("FDD813", 255);
         endMessage.font = font;
-        endMessage.rect = createRect(gameStatus.windowSizeX / 2 - 675, gameStatus.windowSizeY / 2 - 115, 1400, 150);
+        endMessage.rect = createRect(gameStatus.windowSizeX / 2 - 675, gameStatus.windowSizeY / 2 - 215, 1400, 150);
         endMessage.text = "You successfully protected the Truck!";
     } else {
         endMessage.color = createColor("FF0000", 255);
         endMessage.font = font;
-        endMessage.rect = createRect(gameStatus.windowSizeX / 2 - 650, gameStatus.windowSizeY / 2 - 115, 1300, 150);
+        endMessage.rect = createRect(gameStatus.windowSizeX / 2 - 675, gameStatus.windowSizeY / 2 - 215, 1300, 150);
         endMessage.text = "You failed to protect the Truck!";
     }
 
+    playerNick.color = createColor("FFFFFF", 255);
+    playerNick.font = font;
+    playerNick.rect = createRect(gameStatus.windowSizeX /2 - 350, gameStatus.windowSizeY / 2 - 50, 300, 100);
+    playerNick.text = malloc(16 * sizeof(char));
+    memcpy(playerNick.text, player.nick, strlen(player.nick) + 1);
+
     scoreText.color = createColor("FFFFFF", 255);
     scoreText.font = font;
-    scoreText.rect = createRect(gameStatus.windowSizeX /2 - 250, gameStatus.windowSizeY / 2 - 215, 500, 100);
+    scoreText.rect = createRect(playerNick.rect.x + playerNick.rect.w + 100, playerNick.rect.y, 500, 100);
     scoreText.text = malloc(50 * sizeof(char));
-    if (player.money != 0) player.score *= player.money / 4;
     sprintf(scoreText.text, "SCORE: %d", player.score);
 
     backToMenu.text = "Back to Menu";
@@ -52,12 +58,19 @@ void renderEndScene(SDL_Renderer* renderer) {
     renderText(renderer, &endMessage);
     renderText(renderer, &backToMenu);
     renderText(renderer, &scoreText);
+    renderText(renderer, &playerNick);
     backToMenu.color = backToMenuColor;
+
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 200);
+    SDL_RenderFillRect(renderer, &(SDL_Rect){gameStatus.windowSizeX / 2 - 5, gameStatus.windowSizeY / 2 - 75, 10, 125});
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
     highlightButtons();
 }
 
 void freeEndScene() {
     free(scoreText.text);
+    free(playerNick.text);
+    playerNick.text = NULL;
     TTF_CloseFont(font);
 }

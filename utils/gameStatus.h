@@ -8,7 +8,8 @@ typedef enum {
     MENU,
     GAME,
     WIN,
-    LOSE
+    LOSE,
+    NONE
 } CurrentSceneEnum;
 
 typedef enum {

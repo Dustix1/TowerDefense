@@ -210,6 +210,7 @@ void freeGameScene() {
     freeButtons();
     freeTowers();
     freeEnemies();
+    if (player.money != 0) player.score *= (player.money / 4) * (currentWave + 1);
     resetWaves();
     SDL_DestroyTexture(map.mapTexture);
     TTF_CloseFont(font);

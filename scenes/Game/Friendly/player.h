@@ -4,6 +4,7 @@ typedef struct {
     float hp;
     int money;
     int score;
+    char* nick;
 } Player;
 
 extern Player player;
