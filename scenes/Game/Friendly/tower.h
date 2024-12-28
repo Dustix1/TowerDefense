@@ -13,7 +13,21 @@ typedef enum {
     CRUCIFIX
 } TowerType;
 
+typedef enum {
+    NORMALPROJECTILE,
+    GORYOPROJECTILE
+} ProjectileType;
+
 typedef struct Tower Tower;
+
+typedef struct {
+    SDL_Texture* texture;
+    Tower* originTower;
+    ProjectileType type;
+    SDL_FRect rect;
+    SDL_FPoint directionVector;
+    double rotationAngle;
+} Projectile;
 
 struct Tower {
     TowerType type;
@@ -48,6 +62,10 @@ void showTowerRange();
 void sellTower();
 
 void makeTowersDoSomething(SDL_Renderer* renderer);
+
+void renderProjectiles();
+void moveProjectiles();
+void checkForProjectileCollision();
 
 void getTarget();
 void setNextTarget();

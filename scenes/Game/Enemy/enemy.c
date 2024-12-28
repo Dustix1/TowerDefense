@@ -29,11 +29,7 @@ void loadGhostTextures(SDL_Renderer* renderer) {
 }
 
 void spawnNewEnemy(ENEMYTYPE type) {
-    if (enemyCount == 0) {
-        enemies = malloc((enemyCount + 1) * sizeof(ENEMY*));
-    } else {
-        enemies = realloc(enemies, (enemyCount + 1) * sizeof(ENEMY*));
-    }
+    enemies = realloc(enemies, (enemyCount + 1) * sizeof(ENEMY*));
     enemyCount++;
 
     ENEMY* buff = malloc(sizeof(ENEMY));
@@ -73,25 +69,15 @@ void spawnNewEnemy(ENEMYTYPE type) {
 }
 
 void reachedPlayerBase(int index) {
-    ENEMY** buff = malloc((enemyCount - 1) * sizeof(ENEMY*));
-    bool wasSkipped = false;
     for (size_t i = 0; i < enemyCount; i++)
     {
-        if (i != index && !wasSkipped) {
-            buff[i] = enemies[i];
-        } else if (i != index) {
-            buff[i - 1] = enemies[i];
-        } else {
-            wasSkipped = true;
+        if (enemies[i] == NULL) continue;
+        if (i == index) {
             free(enemies[i]);
             enemies[i] = NULL;
+            damagePlayer(7.5f);
         }
     }
-
-    free(enemies);
-    enemies = buff;
-    enemyCount--;
-    damagePlayer(7.5f);
 }
 
 void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
@@ -100,6 +86,7 @@ void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
     SDL_FRect result;
     for (size_t i = 0; i < enemyCount; i++)
     {
+        if (enemies[i] == NULL) continue;
         SDL_FRect pointFRect = createFRect(map.mapPointsWithDirections.points[enemies[i]->currPointIndex].x,
                                            map.mapPointsWithDirections.points[enemies[i]->currPointIndex].y, 1, 1);
         SDL_FRect enemyHitboxFRect = createFRect(enemies[i]->rect.x + ghostSize / 2 - 5,
@@ -135,6 +122,7 @@ void renderEnemies(SDL_Renderer* renderer) {
     
     for (size_t i = 0; i < enemyCount; i++)
     {
+        if (enemies[i] == NULL) continue;
         SDL_Rect buff = createRect(enemies[i]->rect.x, enemies[i]->rect.y, enemies[i]->rect.w, enemies[i]->rect.h);
         SDL_RenderCopy(renderer, enemies[i]->texture, NULL, &buff);
     }
@@ -143,25 +131,11 @@ void renderEnemies(SDL_Renderer* renderer) {
 void checkForDeath() {
     for (size_t i = 0; i < enemyCount; i++)
     {
-        if (enemies[i]->hp <= 0) {
-            ENEMY** buff = malloc((enemyCount - 1) * sizeof(ENEMY*));
-            bool wasSkipped = false;
-            for (size_t j = 0; j < enemyCount; j++)
-            {
-                if (j != i && !wasSkipped) {
-                    buff[j] = enemies[j];
-                } else if (j != i) {
-                    buff[j - 1] = enemies[j];
-                } else {
-                    wasSkipped = true;
-                    free(enemies[j]);
-                    enemies[j] = NULL;
-                }
-            }
+        if (enemies[i] == NULL) continue;
 
-            free(enemies);
-            enemies = buff;
-            enemyCount--;
+        if (enemies[i]->hp <= 0) {
+            free(enemies[i]);
+            enemies[i] = NULL;
         }
     }
 }

@@ -120,6 +120,8 @@ void renderGame(SDL_Renderer* renderer) {
     SDL_RenderDrawLines(renderer, map.mapPointsWithDirections.points, 12);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);*/
 
+    moveProjectiles();
+
     moveEnemiesTowardsCurrPoint(renderer);
     checkForDeath();
     getTarget();
@@ -132,6 +134,9 @@ void renderGame(SDL_Renderer* renderer) {
     makeRangeFollowtower();
     checkForMoney();
     showTowerRange();
+
+    renderProjectiles(renderer);
+    checkForProjectileCollision();
     
     // UI RENDER
     
@@ -160,7 +165,7 @@ void renderGame(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, startWaveButton, NULL, &startWaveButtonRect);
     SDL_SetTextureColorMod(startWaveButton, 255, 255, 255);
 
-    // TOWER RENDER
+    // TOWER & PROJECTILES
     renderInGameTowers(renderer);
     makeTowersDoSomething(renderer);
 

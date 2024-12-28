@@ -11,3 +11,4 @@ SDL_Color createColor(char* hexColor, int alpha);
 SDL_FRect createFRect(float posX, float posY, float width, float height);
 
 double calculateRotationAngle(SDL_Rect r1, SDL_Rect r2);
+double calculateRadiansFromAngle(double angle);

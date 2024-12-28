@@ -84,7 +84,14 @@ void readWave() {
 void runWave(SDL_Renderer* renderer) {
     if (waveRunning) {
         if (waveDataIndex >= waveDataEndIndex) {
-            if (enemyCount == 0) endWave();
+            bool isEveryoneDead = true;
+            for (size_t i = 0; i < enemyCount; i++)
+            {
+                if (!isEveryoneDead) break;
+                if (enemies[i] != NULL) isEveryoneDead = false;
+            }
+            
+            if (isEveryoneDead) endWave();
             return;
         }
 
