@@ -38,17 +38,17 @@ void spawnNewEnemy(ENEMYTYPE type) {
     switch (type)
     {
     case SPIRIT:
-        buff->speed = 125;
-        buff->hp = 7;
+        buff->speed = 120;
+        buff->hp = 10;
         buff->texture = spiritTexture;
         break;
     case SHADE:
-        buff->speed = 110;
-        buff->hp = 5;
+        buff->speed = 65;
+        buff->hp = 13.5;
         buff->texture = shadeTexture;
         break;
     case GORYO:
-        buff->speed = 125;
+        buff->speed = 120;
         buff->hp = 6;
         buff->texture = goryoTexture;
         break;
@@ -88,9 +88,9 @@ void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
     {
         if (enemies[i] == NULL) continue;
         SDL_FRect pointFRect = createFRect(map.mapPointsWithDirections.points[enemies[i]->currPointIndex].x,
-                                           map.mapPointsWithDirections.points[enemies[i]->currPointIndex].y, 1, 1);
+                                        map.mapPointsWithDirections.points[enemies[i]->currPointIndex].y, 1, 1);
         SDL_FRect enemyHitboxFRect = createFRect(enemies[i]->rect.x + ghostSize / 2 - 5,
-                                                 enemies[i]->rect.y + ghostSize / 2 - 5, 10, 10);
+                                                enemies[i]->rect.y + ghostSize / 2 - 5, 10, 10);
         if (SDL_IntersectFRect(&enemyHitboxFRect, &pointFRect, &result) != SDL_TRUE) {
             switch (map.mapPointsWithDirections.directions[enemies[i]->currPointIndex])
             {
@@ -137,17 +137,17 @@ void checkForDeath() {
             switch (enemies[i]->type)
             {
             case SHADE:
-                player.score += 50;
-                addMoney(1);
+                player.score += 30;
+                addMoney(5);
                 break;
             case SPIRIT:
-                player.score += 75;
+                player.score += 20;
                 addMoney(2);
                 break;
             case GORYO:
             case DEOGEN:
-                player.score += 115;
-                addMoney(3);
+                player.score += 45;
+                addMoney(7);
                 break;
             }
             free(enemies[i]);

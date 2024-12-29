@@ -122,14 +122,16 @@ void renderGame(SDL_Renderer* renderer) {
 
     moveProjectiles();
 
+    renderProjectiles(renderer);
+
     moveEnemiesTowardsCurrPoint(renderer);
     checkForProjectileCollision();
+    getTarget();
+    buffTowers(renderer);
     makeTowersDoSomething(renderer);
     checkForDeath();
     getTarget();
     renderEnemies(renderer);
-
-    renderProjectiles(renderer);
 
     SDL_RenderCopy(renderer, van, NULL, &map.vanRect);
     if (SDL_GetTicks64() >= vanDamageAnimEndTime) SDL_SetTextureColorMod(van, 255, 255, 255);
@@ -210,8 +212,8 @@ void freeGameScene() {
     freeButtons();
     freeTowers();
     freeEnemies();
-    player.score += player.money;
     player.score *= currentWave + 1;
+    player.score += player.money;
     resetWaves();
     SDL_DestroyTexture(map.mapTexture);
     TTF_CloseFont(font);

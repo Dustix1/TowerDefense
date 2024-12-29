@@ -22,11 +22,11 @@ typedef struct Tower Tower;
 
 typedef struct {
     SDL_Texture* texture;
-    Tower* originTower;
     ProjectileType type;
     SDL_FRect rect;
     SDL_FPoint directionVector;
     double rotationAngle;
+    float damage;
 } Projectile;
 
 struct Tower {
@@ -44,6 +44,7 @@ struct Tower {
     float baseDamage;
     float damage;
     bool shouldShowRange;
+    int buffed;
 };
 
 void loadTowers(SDL_Renderer* renderer);
@@ -61,6 +62,7 @@ void makeRangeFollowtower();
 void showTowerRange();
 void sellTower();
 
+void buffTowers(SDL_Renderer* renderer);
 void makeTowersDoSomething(SDL_Renderer* renderer);
 
 void renderProjectiles();
