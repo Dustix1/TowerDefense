@@ -7,7 +7,7 @@
 #include "../../../utils/gameStatus.h"
 #include "../Friendly/player.h"
 
-ENEMY** enemies;
+ENEMY** enemies = NULL;
 unsigned int enemyCount = 0;
 
 static int ghostSize = 75;

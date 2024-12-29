@@ -17,6 +17,7 @@ void saveData() {
         freeCurrentScene();
         changeScene(NONE);
         gameStatus.running = false;
+        return;
     }
 
     char buff[50];
@@ -50,6 +51,7 @@ void saveData() {
         freeCurrentScene();
         changeScene(NONE);
         gameStatus.running = false;
+        return;
     }
 
     if (saveCount != 0) {
@@ -80,4 +82,56 @@ void saveData() {
     free(saves);
     saves = NULL;
     saveCount = 0;
+}
+
+char** getLeaderboard(int* count) {
+    FILE* saveFile = fopen("../save/players.save", "r");
+    if (saveFile == NULL) {
+        freeCurrentScene();
+        changeScene(NONE);
+        gameStatus.running = false;
+        return NULL;
+    }
+    
+    char** saves = NULL;
+    char buff[50];
+    int saveCount = 0;
+    while (fgets(buff, sizeof(buff), saveFile))
+    {
+        saves = realloc(saves, (saveCount + 1) * sizeof(char*));
+        saves[saveCount] = malloc(50 * sizeof(char));
+        memcpy(saves[saveCount], strtok(buff, "\n"), strlen(buff) + 1);
+        saveCount++;
+    }
+    fclose(saveFile);
+
+    if (saveCount == 0) {
+        *count = 0;
+        return NULL;
+    }
+
+    // SORT LEADERBOARD
+    for (size_t i = 0; i < saveCount - 1; i++)
+    {
+        for (size_t j = 0; j < saveCount - i - 1; j++) {
+            char buff1[50];
+            strcpy(buff1, saves[j]);
+            strtok(buff1, " ");
+            int score1 = atoi(strtok(NULL, " \n"));
+
+            char buff2[50];
+            strcpy(buff2, saves[j + 1]);
+            strtok(buff2, " ");
+            int score2 = atoi(strtok(NULL, " \n"));
+            
+            if (score2 > score1) {
+                char* temp = saves[j + 1];
+                saves[j + 1] = saves[j];
+                saves[j] = temp;
+            }
+        }
+    }
+
+    *count = saveCount;
+    return saves;
 }

@@ -17,7 +17,7 @@ static Tower** towers;
 static int towerSize = 75;
 static int towerCount = 0;
 
-static Projectile** projectiles;
+static Projectile** projectiles = NULL;
 static int projectileCount = 0;
 
 static int waterTowerCost = 20;
