@@ -48,10 +48,10 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
 
     loadPathTexture(renderer);
     loadGhostTextures(renderer);
-    loadTowers(renderer);
+    loadTowers(renderer, font);
 
     player.hp = 100;
-    player.money = 50;
+    player.money = 30;
     player.score = 0;
 
     currentWave = 0;

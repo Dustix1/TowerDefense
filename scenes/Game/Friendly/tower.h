@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #include "../Enemy/enemy.h"
 
@@ -47,7 +48,7 @@ struct Tower {
     int buffed;
 };
 
-void loadTowers(SDL_Renderer* renderer);
+void loadTowers(SDL_Renderer* renderer, TTF_Font* font);
 void renderInGameTowers(SDL_Renderer* renderer);
 void renderUITowerSelection(SDL_Renderer* renderer);
 

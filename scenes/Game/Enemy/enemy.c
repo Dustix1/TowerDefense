@@ -6,6 +6,7 @@
 #include "../Map/map.h"
 #include "../../../utils/gameStatus.h"
 #include "../Friendly/player.h"
+#include "waves.h"
 
 ENEMY** enemies = NULL;
 unsigned int enemyCount = 0;
@@ -64,6 +65,8 @@ void spawnNewEnemy(ENEMYTYPE type) {
         break;
     }
     buff->currPointIndex = 1;
+    if (currentWave + 1 >= 5) buff->hp += 2.5;
+    if (currentWave + 1 >= 7) buff->hp += 5;
 
     enemies[enemyCount - 1] = buff;
 }
@@ -138,7 +141,7 @@ void checkForDeath() {
             {
             case SHADE:
                 player.score += 30;
-                addMoney(5);
+                addMoney(3);
                 break;
             case SPIRIT:
                 player.score += 20;
@@ -147,7 +150,7 @@ void checkForDeath() {
             case GORYO:
             case DEOGEN:
                 player.score += 45;
-                addMoney(7);
+                addMoney(4);
                 break;
             }
             free(enemies[i]);
