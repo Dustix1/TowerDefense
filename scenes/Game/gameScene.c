@@ -216,5 +216,9 @@ void freeGameScene() {
     player.score += player.money;
     resetWaves();
     SDL_DestroyTexture(map.mapTexture);
+    SDL_DestroyTexture(van);
+    SDL_DestroyTexture(bottomUIBG);
+    SDL_DestroyTexture(woodBorder);
+    SDL_DestroyTexture(startWaveButton);
     TTF_CloseFont(font);
 }

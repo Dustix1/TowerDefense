@@ -32,13 +32,26 @@ Text leaderboardThird;
 Text leaderboardFourth;
 Text leaderboardFifth;
 
+Text controlsText;
+Text waterTowerText;
+Text crucifixTowerText;
+Text IncenseTowerText;
+
+SDL_Texture* holyWaterCannonTexture;
+SDL_Texture* crucifixTexture;
+SDL_Texture* incenseTexture;
+
+SDL_Rect waterCannonImage;
+SDL_Rect crucifixImage;
+SDL_Rect incenseImage;
+
 int nickLength = 0;
 static bool alreadyGotName = false;
 
 static int saveCount = 0;
 char** leaderboard = NULL;
 
-void initMenuScene()
+void initMenuScene(SDL_Renderer* renderer)
 {
     font = TTF_OpenFont("../fonts/lazy_dog.ttf", 120);
 
@@ -138,6 +151,36 @@ void initMenuScene()
     leaderboardFifth.text = malloc(55 * sizeof(char));
     if (saveCount >= 5) sprintf(leaderboardFifth.text, "5. %s", leaderboard[4]);
     else strcpy(leaderboardFifth.text, "5.          ");
+
+    SDL_Color infoColor = createColor("FFFFFF", 255);
+
+    controlsText.font = font;
+    controlsText.color = infoColor;
+    controlsText.rect = createRect(nicknameLabel.rect.x - 250, nicknameValue.rect.y + 350, 650, 75);
+    controlsText.text = "You can sell towers by right clicking on them";
+
+    waterTowerText.font = font;
+    waterTowerText.color = infoColor;
+    waterTowerText.rect = createRect(controlsText.rect.x + 80, controlsText.rect.y + controlsText.rect.h, 550, 75);
+    waterTowerText.text = "- Shoots projectiles at one target";
+
+    crucifixTowerText.font = font;
+    crucifixTowerText.color = infoColor;
+    crucifixTowerText.rect = createRect(waterTowerText.rect.x, waterTowerText.rect.y + waterTowerText.rect.h, 550, 75);
+    crucifixTowerText.text = "- Inflicts area damage over time";
+
+    IncenseTowerText.font = font;
+    IncenseTowerText.color = infoColor;
+    IncenseTowerText.rect = createRect(crucifixTowerText.rect.x, crucifixTowerText.rect.y + crucifixTowerText.rect.h, 550, 75);
+    IncenseTowerText.text = "- Boosts tower damage in an area";
+
+    holyWaterCannonTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/towers/HolyWaterCannon.png");
+    incenseTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/towers/IncenseTower.png");
+    crucifixTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/towers/CrucifixTower.png");
+
+    waterCannonImage = createRect(waterTowerText.rect.x - 80, waterTowerText.rect.y, 70, 70);
+    crucifixImage = createRect(crucifixTowerText.rect.x - 80, crucifixTowerText.rect.y, 70, 70);
+    incenseImage = createRect(IncenseTowerText.rect.x - 80, IncenseTowerText.rect.y, 70, 70);
 }
 
 void renderMenu(SDL_Renderer* renderer)
@@ -164,6 +207,15 @@ void renderMenu(SDL_Renderer* renderer)
     renderText(renderer, &leaderboardThird);
     renderText(renderer, &leaderboardFourth);
     renderText(renderer, &leaderboardFifth);
+
+    renderText(renderer, &controlsText);
+    renderText(renderer, &waterTowerText);
+    renderText(renderer, &crucifixTowerText);
+    renderText(renderer, &IncenseTowerText);
+
+    SDL_RenderCopy(renderer, holyWaterCannonTexture, NULL, &waterCannonImage);
+    SDL_RenderCopy(renderer, crucifixTexture, NULL, &crucifixImage);
+    SDL_RenderCopy(renderer, incenseTexture, NULL, &incenseImage);
 
     if (!searchForButton("nickname")->active) {
         renderText(renderer, &pressEnterText);
@@ -214,6 +266,10 @@ void freeMenuScene() {
     free(leaderboardThird.text);
     free(leaderboardFourth.text);
     free(leaderboardFifth.text);
+
+    SDL_DestroyTexture(holyWaterCannonTexture);
+    SDL_DestroyTexture(crucifixTexture);
+    SDL_DestroyTexture(incenseTexture);
     
     freeButtons();
     TTF_CloseFont(font);

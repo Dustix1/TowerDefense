@@ -17,7 +17,6 @@ static SDL_Texture* spiritTexture;
 static SDL_Texture* shadeTexture;
 static SDL_Texture* goryoTexture;
 static SDL_Texture* deogenTexture;
-static SDL_Texture* missingTexture;
 
 bool loadedTextures = false;
 
@@ -26,7 +25,6 @@ void loadGhostTextures(SDL_Renderer* renderer) {
     shadeTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Shade.png");
     goryoTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Goryo.png");
     deogenTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/Deogen.png");
-    missingTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/enemies/missingTexture.jpg");
 }
 
 void spawnNewEnemy(ENEMYTYPE type) {
@@ -57,11 +55,6 @@ void spawnNewEnemy(ENEMYTYPE type) {
         buff->speed = 300;
         buff->hp = 10;
         buff->texture = deogenTexture;
-        break;
-    default:
-        buff->speed = 350;
-        buff->hp = 100;
-        buff->texture = missingTexture;
         break;
     }
     buff->currPointIndex = 1;
@@ -173,4 +166,9 @@ void freeEnemies() {
     free(enemies);
     enemies = NULL;
     enemyCount = 0;
+
+    SDL_DestroyTexture(spiritTexture);
+    SDL_DestroyTexture(shadeTexture);
+    SDL_DestroyTexture(deogenTexture);
+    SDL_DestroyTexture(goryoTexture);
 }

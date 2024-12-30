@@ -562,4 +562,9 @@ void freeTowers() {
     holyWaterCannonCostText.text = NULL;
     crucifixCostText.text = NULL;
     incenseCostText.text = NULL;
+
+    SDL_DestroyTexture(holyWaterCannonTexture);
+    SDL_DestroyTexture(crucifixTexture);
+    SDL_DestroyTexture(incenseTexture);
+    SDL_DestroyTexture(waterProjectileTexture);
 }

@@ -46,7 +46,7 @@ int main()
     SDL_Event event;
 
     initGame();
-    initMenuScene();
+    initMenuScene(renderer);
 
     while (gameStatus.running)
     {

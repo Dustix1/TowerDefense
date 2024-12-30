@@ -94,7 +94,7 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
         } else if (strcmp(temp->ID, "startWave") == 0) {
             startWave();
         } else if (strcmp(temp->ID, "backToMenu") == 0) {
-            initMenuScene();
+            initMenuScene(renderer);
             changeScene(MENU);
         } else if (strcmp(temp->ID, "waterTower") == 0 || strcmp(temp->ID, "incenseTower") == 0 || strcmp(temp->ID, "crucifixTower") == 0) {
             setTowerUIButtonsState(false);

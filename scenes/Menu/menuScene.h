@@ -7,8 +7,8 @@
 extern int nickLength;
 extern Text nicknameValue;
 
-void renderMenu(SDL_Renderer* menuRenderer);
-void initMenuScene();
+void renderMenu(SDL_Renderer* renderer);
+void initMenuScene(SDL_Renderer* renderer);
 
 void writeSymbol(int sym);
 void delSymbol();
