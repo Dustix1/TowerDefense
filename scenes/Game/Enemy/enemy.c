@@ -9,7 +9,7 @@
 #include "waves.h"
 
 ENEMY** enemies = NULL;
-unsigned int enemyCount = 0;
+int enemyCount = 0;
 
 static int ghostSize = 75;
 

@@ -26,7 +26,7 @@ typedef struct {
 } ENEMY;
 
 extern ENEMY** enemies;
-extern unsigned int enemyCount;
+extern int enemyCount;
 
 void spawnNewEnemy(ENEMYTYPE type);
 void moveEnemiesTowardsCurrPoint();
