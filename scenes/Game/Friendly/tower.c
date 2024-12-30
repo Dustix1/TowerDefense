@@ -192,7 +192,7 @@ void createTower(char* id) {
         temp->baseDamage = 1;
         temp->damage = temp->baseDamage;
         temp->texture = crucifixTexture;
-        int range = 225;
+        int range = 217;
         temp->range = createRect(x - range / 2, y - range / 2, range, range);
         temp->rect = createRect(x - towerSize / 2, y - towerSize / 2, towerSize - 15, towerSize + 7);
     }
