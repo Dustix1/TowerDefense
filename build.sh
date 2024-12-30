@@ -2,5 +2,5 @@ rm -rf build
 cmake -B build
 cd build
 make
-./sdlgame
+./phasmo-tower-defense
 cd ..
