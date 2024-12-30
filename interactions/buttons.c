@@ -73,7 +73,7 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
             changeScene(GAME);
         } else if (strcmp(temp->ID, "nickname") == 0) {
             nicknameValue.color = createColor("DDDDFF", 255);
-            sprintf(nicknameValue.text, "");
+            memset(nicknameValue.text, 0, sizeof(nicknameValue.text));
             nickLength = 0;
             temp->active = false;
         } else if (strcmp(temp->ID, "spwnRndEne") == 0) {

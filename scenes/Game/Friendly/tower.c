@@ -265,7 +265,7 @@ void stopDragging() {
     }
     if (!didIntersect) {
         int i = 0;
-        while (map.mapPointsWithDirections.directions[i] != -1)
+        while (map.mapPointsWithDirections.directions[i] != 999)
         {
             if (didIntersect) break;
             if (SDL_IntersectRect(&draggedTower->rect, &map.pathRects[i], &result) == SDL_TRUE) didIntersect = true;

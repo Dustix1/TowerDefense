@@ -84,7 +84,7 @@ void runWave() {
     if (waveRunning) {
         if (waveDataIndex >= waveDataEndIndex) {
             bool isEveryoneDead = true;
-            for (size_t i = 0; i < enemyCount; i++)
+            for (int i = 0; i < enemyCount; i++)
             {
                 if (!isEveryoneDead) break;
                 if (enemies[i] != NULL) isEveryoneDead = false;

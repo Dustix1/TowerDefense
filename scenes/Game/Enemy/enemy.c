@@ -108,7 +108,7 @@ void moveEnemiesTowardsCurrPoint() {
             }
         } else {
             enemies[i]->currPointIndex++;
-            if (map.mapPointsWithDirections.directions[enemies[i]->currPointIndex] == -1) reachedPlayerBase(i);
+            if (map.mapPointsWithDirections.directions[enemies[i]->currPointIndex] == 999) reachedPlayerBase(i);
         }
     }
 }

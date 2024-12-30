@@ -11,7 +11,7 @@ void loadPathTexture(SDL_Renderer* renderer) {
 
 void generatePath() {
     int i = 0;
-    while (map.mapPointsWithDirections.directions[i] != -1)
+    while (map.mapPointsWithDirections.directions[i] != 999)
     {
         SDL_Point firstPoint = map.mapPointsWithDirections.points[i];
         SDL_Point secondPoint = map.mapPointsWithDirections.points[i + 1];
@@ -46,7 +46,7 @@ void createMap(SelectedMap selectedMap, SDL_Renderer* renderer) {
 
         SDL_Point points[13] = {{605, 900}, {605, 500}, {218, 500}, {218, 309}, {1050, 309}, {1050, 70}, {1767, 70}, {1767, 300}, {1310, 300},
                                 {1310, 500}, {1510, 500}, {1510, 750}, {0, 0}};
-        DIRECTION directions[13] = {-2, UP, LEFT, UP, RIGHT, UP, RIGHT, DOWN, LEFT, DOWN, RIGHT, DOWN, -1};
+        DIRECTION directions[13] = {-2, UP, LEFT, UP, RIGHT, UP, RIGHT, DOWN, LEFT, DOWN, RIGHT, DOWN, 999};
 
         buff.points = malloc(13 * sizeof(SDL_Point));
         memcpy(buff.points, points, 13 * sizeof(SDL_Point));
@@ -68,7 +68,7 @@ void createMap(SelectedMap selectedMap, SDL_Renderer* renderer) {
 
 void renderPath(SDL_Renderer* renderer) {
     int i = 0;
-    while (map.mapPointsWithDirections.directions[i] != -1) {
+    while (map.mapPointsWithDirections.directions[i] != 999) {
         SDL_RenderCopy(renderer, pathTexture, NULL, &map.pathRects[i]);
         i++;
     }
