@@ -18,7 +18,7 @@ static int waveData[200];
 static int waveDataIndex;
 static int waveDataEndIndex;
 
-static int nextIterTime = 0;
+static Uint64 nextIterTime = 0;
 
 bool waveRunning = false;
 
@@ -80,7 +80,7 @@ void readWave() {
     waveDataIndex = 0;
 }
 
-void runWave(SDL_Renderer* renderer) {
+void runWave() {
     if (waveRunning) {
         if (waveDataIndex >= waveDataEndIndex) {
             bool isEveryoneDead = true;

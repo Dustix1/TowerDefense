@@ -31,7 +31,7 @@ void saveData() {
     }
     fclose(saveFile);
     bool isAlreadyInFile = false;
-    for (size_t i = 0; i < saveCount; i++)
+    for (int i = 0; i < saveCount; i++)
     {
         char buff[50];
         strcpy(buff, saves[i]);
@@ -56,13 +56,13 @@ void saveData() {
 
     if (saveCount != 0) {
         if (isAlreadyInFile) {
-            for (size_t i = 0; i < saveCount; i++)
+            for (int i = 0; i < saveCount; i++)
             {
                 strtok(saves[i], "\n");
                 fprintf(saveFile, "%s\n", saves[i]);
             }   
         } else {
-            for (size_t i = 0; i < saveCount; i++)
+            for (int i = 0; i < saveCount; i++)
             {
                 strtok(saves[i], "\n");
                 fprintf(saveFile, "%s\n", saves[i]);
@@ -74,7 +74,7 @@ void saveData() {
     }
     fclose(saveFile);
 
-    for (size_t i = 0; i < saveCount; i++)
+    for (int i = 0; i < saveCount; i++)
     {
         free(saves[i]);
         saves[i] = NULL;
@@ -111,9 +111,9 @@ char** getLeaderboard(int* count) {
     }
 
     // SORT LEADERBOARD
-    for (size_t i = 0; i < saveCount - 1; i++)
+    for (int i = 0; i < saveCount - 1; i++)
     {
-        for (size_t j = 0; j < saveCount - i - 1; j++) {
+        for (int j = 0; j < saveCount - i - 1; j++) {
             char buff1[50];
             strcpy(buff1, saves[j]);
             strtok(buff1, " ");

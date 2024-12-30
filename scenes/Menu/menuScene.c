@@ -261,7 +261,7 @@ void saveNickname() {
 }
 
 void freeMenuScene() {
-    for (size_t i = 0; i < saveCount; i++)
+    for (int i = 0; i < saveCount; i++)
     {
         free(leaderboard[i]);
         leaderboard[i] = NULL;

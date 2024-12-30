@@ -81,7 +81,7 @@ void loadTowers(SDL_Renderer* renderer, TTF_Font* font) {
 
 void renderInGameTowers(SDL_Renderer* renderer) {
     if (towerCount == 0) return;
-    for (size_t i = 0; i < towerCount; i++)
+    for (int i = 0; i < towerCount; i++)
     {
         if (towers[i] == NULL) continue;
         if (draggedTower != NULL) towers[i]->shouldShowRange = true;
@@ -150,7 +150,7 @@ void renderUITowerSelection(SDL_Renderer* renderer) {
 }
 
 void renderProjectiles(SDL_Renderer* renderer) {
-    for (size_t i = 0; i < projectileCount; i++)
+    for (int i = 0; i < projectileCount; i++)
     {
         if (projectiles[i] == NULL) continue;
         SDL_FRect projectileFRect = projectiles[i]->rect;
@@ -212,7 +212,7 @@ void createTower(char* id) {
 }
 
 void destroyTower(Tower* tower) {
-    for (size_t i = 0; i < towerCount; i++)
+    for (int i = 0; i < towerCount; i++)
     {
         if (tower == NULL) {
             free(towers[towerCount - 1]);
@@ -256,7 +256,7 @@ void stopDragging() {
     if (SDL_IntersectRect(&draggedTower->rect, &(SDL_Rect){0, gameStatus.windowSizeY - 250, gameStatus.windowSizeX, 250},
         &result) == SDL_TRUE) didIntersect = true;
     if (!didIntersect) {
-        for (size_t i = 0; i < towerCount; i++)
+        for (int i = 0; i < towerCount; i++)
         {
             if (towers[i] == NULL) continue;
             if (SDL_IntersectRect(&draggedTower->rect, &towers[i]->rect, &result) == SDL_TRUE &&
@@ -316,7 +316,7 @@ void checkForMoney() {
 }
 
 void makeRangeFollowtower() {
-    for (size_t i = 0; i < towerCount; i++)
+    for (int i = 0; i < towerCount; i++)
     {
         if (towers[i] == NULL) continue;
         towers[i]->range.x = (towers[i]->rect.x + towers[i]->rect.w / 2) - towers[i]->range.w / 2;
@@ -325,7 +325,7 @@ void makeRangeFollowtower() {
 }
 
 void showTowerRange() {
-    for (size_t i = 0; i < towerCount; i++)
+    for (int i = 0; i < towerCount; i++)
     {
         if (towers[i] == NULL) continue;
         if (isMouseOnRect(towers[i]->rect)) towers[i]->shouldShowRange = true;
@@ -336,7 +336,7 @@ void showTowerRange() {
 
 void sellTower() {
     if (draggedTower != NULL) return;
-    for (size_t i = 0; i < towerCount; i++)
+    for (int i = 0; i < towerCount; i++)
     {
         if (towers[i] == NULL) continue;
         if (isMouseOnRect(towers[i]->rect)) {
@@ -348,7 +348,7 @@ void sellTower() {
 }
 
 void getTarget() {
-    for (size_t i = 0; i < towerCount; i++)
+    for (int i = 0; i < towerCount; i++)
     {
         if (towers[i] == NULL) continue;
         Tower* tower = towers[i];
@@ -366,7 +366,7 @@ void getTarget() {
         switch (tower->type)
         {
         case HOLYWATERCANNON:
-            for (size_t j = 0; j < enemyCount; j++)
+            for (int j = 0; j < enemyCount; j++)
             {
                 if (enemies[j] == NULL) continue;
                 if (tower->currentTarget != NULL) break;
@@ -379,7 +379,7 @@ void getTarget() {
             break;
         
         case INCENSE:
-            for (size_t j = 0; j < towerCount; j++)
+            for (int j = 0; j < towerCount; j++)
             {
                 if (towers[j] == NULL) continue;
                 if (towers[j] == draggedTower || towers[j]->type == INCENSE) continue;
@@ -392,7 +392,7 @@ void getTarget() {
             break;
 
         case CRUCIFIX:
-            for (size_t j = 0; j < enemyCount; j++)
+            for (int j = 0; j < enemyCount; j++)
             {
                 if (enemies[j] == NULL) continue;
                 SDL_FRect enemyFRect = enemies[j]->rect;
@@ -409,24 +409,24 @@ void getTarget() {
 }
 
 void buffTowers(SDL_Renderer* renderer) {
-    for (size_t i = 0; i < towerCount; i++)
+    for (int i = 0; i < towerCount; i++)
     {
         if (towers[i] == NULL) continue;
         if (towers[i] == draggedTower) continue;
         if (towers[i]->type == INCENSE) {
-            for (size_t j = 0; j < towers[i]->towerTargetCount; j++)
+            for (int j = 0; j < towers[i]->towerTargetCount; j++)
             {
                 towers[i]->towerTargets[j]->buffed++;
             }
         }
     }
 
-    for (size_t i = 0; i < towerCount; i++)
+    for (int i = 0; i < towerCount; i++)
     {
         if (towers[i] == NULL) continue;
         if (towers[i] == draggedTower) continue;
         if (towers[i]->type == INCENSE) {
-            for (size_t j = 0; j < towers[i]->towerTargetCount; j++)
+            for (int j = 0; j < towers[i]->towerTargetCount; j++)
             {
                 if (towers[i]->towerTargets[j]->buffed > 1) towers[i]->towerTargets[j]->damage = towers[i]->towerTargets[j]->baseDamage * (0.75f * towers[i]->towerTargets[j]->buffed);
                 else if (towers[i]->towerTargets[j]->buffed == 1) towers[i]->towerTargets[j]->damage = towers[i]->towerTargets[j]->baseDamage + 0.5f;
@@ -439,12 +439,12 @@ void buffTowers(SDL_Renderer* renderer) {
         }
     }
 
-    for (size_t i = 0; i < towerCount; i++)
+    for (int i = 0; i < towerCount; i++)
     {
         if (towers[i] == NULL) continue;
         if (towers[i] == draggedTower) continue;
         if (towers[i]->type == INCENSE) {
-            for (size_t j = 0; j < towers[i]->towerTargetCount; j++)
+            for (int j = 0; j < towers[i]->towerTargetCount; j++)
             {
                 towers[i]->towerTargets[j]->buffed = 0;
             }
@@ -453,14 +453,14 @@ void buffTowers(SDL_Renderer* renderer) {
 }
 
 void makeTowersDoSomething(SDL_Renderer* renderer) {
-    for (size_t i = 0; i < towerCount; i++)
+    for (int i = 0; i < towerCount; i++)
     {
         if (towers[i] == NULL) continue;
         if (towers[i] == draggedTower) continue;
         switch (towers[i]->type)
         {
         case CRUCIFIX:
-            for (size_t j = 0; j < towers[i]->enemyTargetCount; j++)
+            for (int j = 0; j < towers[i]->enemyTargetCount; j++)
                 {
                     SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
                     if (SDL_GetTicks64() >= towers[i]->nextTimeOfAttack) {
@@ -495,12 +495,14 @@ void makeTowersDoSomething(SDL_Renderer* renderer) {
                     projectileCount++;
                 }
             break;
+        case INCENSE:
+            break;
         }
     }    
 }
 
 void moveProjectiles() {
-    for (size_t i = 0; i < projectileCount; i++)
+    for (int i = 0; i < projectileCount; i++)
     {
         if (projectiles[i] == NULL) continue;
         SDL_FRect* projRect = &projectiles[i]->rect;
@@ -511,7 +513,7 @@ void moveProjectiles() {
 
 void checkForProjectileCollision() {
     SDL_FRect result;
-    for (size_t i = 0; i < projectileCount; i++)
+    for (int i = 0; i < projectileCount; i++)
     {
         if (projectiles[i] == NULL) continue;
         SDL_FRect projFRect = projectiles[i]->rect;
@@ -521,7 +523,7 @@ void checkForProjectileCollision() {
                 projectiles[i] = NULL;
                 continue;
             }
-        for (size_t j = 0; j < enemyCount; j++)
+        for (int j = 0; j < enemyCount; j++)
         {
             if (enemies[j] == NULL) continue;
             if (projectiles[i] == NULL) continue;
@@ -537,7 +539,7 @@ void checkForProjectileCollision() {
 
 void freeTowers() {
     draggingTower = false;
-    for (size_t i = 0; i < towerCount; i++)
+    for (int i = 0; i < towerCount; i++)
     {   
         if (towers[i] == NULL) continue;
         free(towers[i]);
@@ -546,7 +548,7 @@ void freeTowers() {
     free(towers);
     towers = NULL;
 
-    for (size_t i = 0; i < projectileCount; i++)
+    for (int i = 0; i < projectileCount; i++)
     {
         if (projectiles[i] == NULL) continue;
         free(projectiles[i]);

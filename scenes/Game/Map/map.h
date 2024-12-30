@@ -24,5 +24,5 @@ extern struct Map map;
 
 void loadPathTexture(SDL_Renderer* renderer);
 void createMap(SelectedMap selectedMap, SDL_Renderer* renderer);
-void generatePath(SDL_Renderer* renderer);
+void generatePath();
 void renderPath(SDL_Renderer* renderer);

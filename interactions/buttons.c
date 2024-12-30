@@ -34,19 +34,6 @@ void makeButtonsLookInActive() {
     {
         if (buttons[i]->type == RECTBUTTON) {
             if (!buttons[i]->active) SDL_SetTextureColorMod(buttons[i]->texture, 100, 100, 100);
-            //else SDL_SetTextureColorMod(buttons[i]->texture, 255, 255, 255);
-        } else {
-            if (!buttons[i]->active) {
-                SDL_Color inactiveColor;
-                SDL_Color buttonColor = buttons[i]->text->color;
-                if (buttonColor.r >= 100) inactiveColor.r = buttonColor.r - 100;
-                else inactiveColor.r = 0;
-                if (buttonColor.g >= 100) inactiveColor.g = buttonColor.g - 100;
-                else inactiveColor.g = 0;
-                if (buttonColor.b >= 100) inactiveColor.b = buttonColor.b - 100;
-                else inactiveColor.b = 0;
-                inactiveColor.a = buttonColor.a;
-            }
         }
     }
 }
@@ -85,8 +72,8 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
             initGameScene(renderer, WILLOW); // MAKE SELECTION POSSIBLE LATER
             changeScene(GAME);
         } else if (strcmp(temp->ID, "nickname") == 0) {
-            nicknameValue.color = nicknameValue.color = createColor("DDDDFF", 255);
-            sprintf(nicknameValue.text, "\0");
+            nicknameValue.color = createColor("DDDDFF", 255);
+            sprintf(nicknameValue.text, "");
             nickLength = 0;
             temp->active = false;
         } else if (strcmp(temp->ID, "spwnRndEne") == 0) {

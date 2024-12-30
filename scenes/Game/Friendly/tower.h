@@ -40,7 +40,7 @@ struct Tower {
     Tower** towerTargets;
     int enemyTargetCount;
     int towerTargetCount;
-    int nextTimeOfAttack;
+    Uint64 nextTimeOfAttack;
     int cost;
     float baseDamage;
     float damage;

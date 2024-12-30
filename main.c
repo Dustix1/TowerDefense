@@ -68,7 +68,7 @@ int main()
             }
 
             if (event.type == SDL_KEYDOWN) {
-                if ((event.key.keysym.sym >= SDLK_a && event.key.keysym.sym <= SDLK_z || event.key.keysym.sym == SDLK_SPACE)
+                if (((event.key.keysym.sym >= SDLK_a && event.key.keysym.sym <= SDLK_z) || event.key.keysym.sym == SDLK_SPACE)
                     && !searchForButton("nickname")->active && nickLength < 15) {
                     writeSymbol(event.key.keysym.sym);
                 } else if (event.key.keysym.sym == SDLK_RETURN && !searchForButton("nickname")->active && nickLength >= 5) {

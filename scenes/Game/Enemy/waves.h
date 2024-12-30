@@ -8,7 +8,7 @@ extern bool waveRunning;
 
 void loadNextWave();
 void readWave();
-void runWave(SDL_Renderer* renderer);
+void runWave();
 void startWave();
 void endWave();
 void resetWaves();

@@ -45,5 +45,7 @@ void freeCurrentScene() {
     case LOSE:
         freeEndScene();
         break;
+    case NONE:
+        break;
     }
 }

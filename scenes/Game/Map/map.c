@@ -9,7 +9,7 @@ void loadPathTexture(SDL_Renderer* renderer) {
     pathTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/maps/path.jpg");
 }
 
-void generatePath(SDL_Renderer* renderer) {
+void generatePath() {
     int i = 0;
     while (map.mapPointsWithDirections.directions[i] != -1)
     {

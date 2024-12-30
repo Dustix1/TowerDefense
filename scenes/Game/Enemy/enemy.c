@@ -65,7 +65,7 @@ void spawnNewEnemy(ENEMYTYPE type) {
 }
 
 void reachedPlayerBase(int index) {
-    for (size_t i = 0; i < enemyCount; i++)
+    for (int i = 0; i < enemyCount; i++)
     {
         if (enemies[i] == NULL) continue;
         if (i == index) {
@@ -76,11 +76,11 @@ void reachedPlayerBase(int index) {
     }
 }
 
-void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
+void moveEnemiesTowardsCurrPoint() {
     if (enemyCount == 0) return;
 
     SDL_FRect result;
-    for (size_t i = 0; i < enemyCount; i++)
+    for (int i = 0; i < enemyCount; i++)
     {
         if (enemies[i] == NULL) continue;
         SDL_FRect pointFRect = createFRect(map.mapPointsWithDirections.points[enemies[i]->currPointIndex].x,
@@ -116,7 +116,7 @@ void moveEnemiesTowardsCurrPoint(SDL_Renderer* renderer) {
 void renderEnemies(SDL_Renderer* renderer) {
     if (enemyCount == 0) return;
     
-    for (size_t i = 0; i < enemyCount; i++)
+    for (int i = 0; i < enemyCount; i++)
     {
         if (enemies[i] == NULL) continue;
         SDL_Rect buff = createRect(enemies[i]->rect.x, enemies[i]->rect.y, enemies[i]->rect.w, enemies[i]->rect.h);
@@ -125,7 +125,7 @@ void renderEnemies(SDL_Renderer* renderer) {
 }
 
 void checkForDeath() {
-    for (size_t i = 0; i < enemyCount; i++)
+    for (int i = 0; i < enemyCount; i++)
     {
         if (enemies[i] == NULL) continue;
 
@@ -157,7 +157,7 @@ void damageEnemy(ENEMY* enemy, float damage) {
 }
 
 void freeEnemies() {
-    for (size_t i = 0; i < enemyCount; i++)
+    for (int i = 0; i < enemyCount; i++)
     {
         if (enemies[i] == NULL) continue;
         free(enemies[i]);

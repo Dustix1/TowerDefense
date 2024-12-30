@@ -61,18 +61,6 @@ void initGameScene(SDL_Renderer* renderer, SelectedMap selectedMap) {
 
     van = IMG_LoadTexture(renderer, "../scenes/Game/images/UI/van.png");
 
-    /*pointFinder.color = createColor("FF0000", 255);
-    pointFinder.font = font;
-    pointFinder.rect = createRect(5, gameStatus.windowSizeY - 100, 350, 100);
-    
-    spawnEnemyColor = createColor("0022FF", 255);
-    spawnEnemy.color = spawnEnemyColor;
-    spawnEnemy.font = font;
-    spawnEnemy.rect = createRect(20, 20, 300, 100);
-    spawnEnemy.text = "Spawn Random Enemy";
-    SDL_Color spawnEnemyHilightColor = createColor("00FF22", 255);
-    makeButton(&spawnEnemy, spawnEnemy.rect, NULL, &spawnEnemyHilightColor, "spwnRndEne", TEXTBUTTON);*/
-
     bottomUIBG = IMG_LoadTexture(renderer, "../scenes/Game/images/UI/woodbg.jpg");
     bottomUIBGRect = createRect(0, gameStatus.windowSizeY - 225, gameStatus.windowSizeX, 225);
     woodBorder = IMG_LoadTexture(renderer, "../scenes/Game/images/UI/woodbgborder.jpg");
@@ -115,10 +103,6 @@ void renderGame(SDL_Renderer* renderer) {
     // MAP RENDER
     SDL_RenderCopy(renderer, map.mapTexture, NULL, &map.mapRect);
     renderPath(renderer);
-
-    /*SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-    SDL_RenderDrawLines(renderer, map.mapPointsWithDirections.points, 12);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);*/
 
     moveProjectiles();
 
@@ -178,26 +162,6 @@ void renderGame(SDL_Renderer* renderer) {
     }
 
     runWave(renderer);
-
-
-    /*int mouseX, mouseY;
-    SDL_GetMouseState(&mouseX, &mouseY);
-    double angle = atan2(temp.h / 2 - mouseY, temp.w / 2 - mouseX) * (180 / M_PI) - 90;
-    SDL_RenderCopyEx(renderer, background, NULL, &temp, angle, NULL, SDL_FLIP_NONE);*/
-
-    /*renderText(renderer, &spawnEnemy);
-    spawnEnemy.color = spawnEnemyColor;
-
-
-
-
-    int mouseX, mouseY;
-    SDL_GetMouseState(&mouseX, &mouseY);
-
-    char txt[50];
-    snprintf(txt, sizeof(txt), "%d X %d", mouseX, mouseY);
-    pointFinder.text = txt;
-    renderText(renderer, &pointFinder);*/
 }
 
 void flashVan() {
