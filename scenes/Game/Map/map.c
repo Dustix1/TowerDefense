@@ -6,7 +6,7 @@ static struct MapPointsWithDirections buff;
 static SDL_Texture* pathTexture;
 
 void loadPathTexture(SDL_Renderer* renderer) {
-    pathTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/maps/path.png");
+    pathTexture = IMG_LoadTexture(renderer, "../scenes/Game/images/maps/path.jpg");
 }
 
 void generatePath(SDL_Renderer* renderer) {
