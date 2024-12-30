@@ -40,7 +40,9 @@ Text IncenseTowerText;
 SDL_Texture* holyWaterCannonTexture;
 SDL_Texture* crucifixTexture;
 SDL_Texture* incenseTexture;
+SDL_Texture* background;
 
+SDL_Rect backgroundRect;
 SDL_Rect waterCannonImage;
 SDL_Rect crucifixImage;
 SDL_Rect incenseImage;
@@ -54,6 +56,9 @@ char** leaderboard = NULL;
 void initMenuScene(SDL_Renderer* renderer)
 {
     font = TTF_OpenFont("../fonts/lazy_dog.ttf", 120);
+
+    background = IMG_LoadTexture(renderer, "../scenes/Menu/TarotBackground.jpg");
+    backgroundRect = createRect(-200, 0, gameStatus.windowSizeX + 400, gameStatus.windowSizeY + 200);
 
     if (!alreadyGotName) player.nick = malloc(16 * sizeof(char));
     if (!alreadyGotName) nicknameValue.text = malloc(16 * sizeof(char));
@@ -185,6 +190,9 @@ void initMenuScene(SDL_Renderer* renderer)
 
 void renderMenu(SDL_Renderer* renderer)
 {
+    SDL_SetTextureColorMod(background, 75, 75, 75);
+    SDL_RenderCopy(renderer, background, NULL, &backgroundRect);
+
     title.color = titleColor;
     startBtnText.color = startColor;
     quitBtnText.color = quitColor;
@@ -193,7 +201,7 @@ void renderMenu(SDL_Renderer* renderer)
     if (nickLength >= 5 && searchForButton("nickname")->active) searchForButton("MenuStartBtn")->active = true;
     else {
         searchForButton("MenuStartBtn")->active = false;
-        startBtnText.color = createColor("00CC00", 50);
+        startBtnText.color = createColor("004400", 255);
     }
     
     renderText(renderer, &title);
@@ -270,6 +278,7 @@ void freeMenuScene() {
     SDL_DestroyTexture(holyWaterCannonTexture);
     SDL_DestroyTexture(crucifixTexture);
     SDL_DestroyTexture(incenseTexture);
+    SDL_DestroyTexture(background);
     
     freeButtons();
     TTF_CloseFont(font);
