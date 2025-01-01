@@ -69,15 +69,13 @@ void makeButtonsDoSomething(SDL_Renderer* renderer) {
         } else if (strcmp(temp->ID, "MenuStartBtn") == 0) {
             freeMenuScene();
             freeButtons();
-            initGameScene(renderer, WILLOW); // MAKE SELECTION POSSIBLE LATER
+            initGameScene(renderer, WILLOW);
             changeScene(GAME);
         } else if (strcmp(temp->ID, "nickname") == 0) {
             nicknameValue.color = createColor("DDDDFF", 255);
             memset(nicknameValue.text, 0, 16);
             nickLength = 0;
             temp->active = false;
-        } else if (strcmp(temp->ID, "spwnRndEne") == 0) {
-            spawnNewEnemy(rand() % 5);
         } else if (strcmp(temp->ID, "startWave") == 0) {
             startWave();
         } else if (strcmp(temp->ID, "backToMenu") == 0) {
